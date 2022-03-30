@@ -417,7 +417,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 4,
+                'order' => 7,
             ),
             25 => 
             array (
@@ -433,7 +433,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 5,
+                'order' => 8,
             ),
             26 => 
             array (
@@ -449,7 +449,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 6,
+                'order' => 9,
             ),
             27 => 
             array (
@@ -465,7 +465,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{"resize":{"width":"1000","height":null},"quality":"70%","upsize":true,"thumbnails":[{"name":"medium","scale":"50%"},{"name":"small","scale":"25%"},{"name":"cropped","crop":{"width":"300","height":"250"}}]}',
-                'order' => 3,
+                'order' => 6,
             ),
             28 => 
             array (
@@ -520,7 +520,7 @@ class DataRowsTableSeeder extends Seeder
                 'id' => 32,
                 'data_type_id' => 5,
                 'field' => 'status',
-                'type' => 'select_dropdown',
+                'type' => 'checkbox',
                 'display_name' => 'Estado',
                 'required' => 0,
                 'browse' => 1,
@@ -528,7 +528,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '{"display":{"width":6},"options":{"activo":"activo","inactivo":"inactivo"}}',
+                'details' => '{"display":{"width":6},"on":"Activo","off":"Inactivo","checked":true}',
                 'order' => 4,
             ),
             32 => 
@@ -632,7 +632,7 @@ class DataRowsTableSeeder extends Seeder
                 'id' => 39,
                 'data_type_id' => 6,
                 'field' => 'status',
-                'type' => 'select_dropdown',
+                'type' => 'checkbox',
                 'display_name' => 'Estado',
                 'required' => 0,
                 'browse' => 1,
@@ -640,8 +640,8 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '{"display":{"width":6},"options":{"activo":"activo","inactivo":"inactivo"}}',
-                'order' => 5,
+                'details' => '{"display":{"width":6},"on":"Activo","off":"Inactivo","checked":true}',
+                'order' => 8,
             ),
             39 => 
             array (
@@ -657,7 +657,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 6,
+                'order' => 9,
             ),
             40 => 
             array (
@@ -673,7 +673,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 7,
+                'order' => 10,
             ),
             41 => 
             array (
@@ -689,7 +689,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 8,
+                'order' => 11,
             ),
             42 => 
             array (
@@ -945,7 +945,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{"display":{"width":6},"validation":{"rule":"required|max:191"}}',
-                'order' => 5,
+                'order' => 6,
             ),
             58 => 
             array (
@@ -961,7 +961,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{"display":{"width":6},"validation":{"rule":"required|max:191"}}',
-                'order' => 6,
+                'order' => 7,
             ),
             59 => 
             array (
@@ -977,7 +977,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{"display":{"width":6},"options":{"activo":"activo","inactivo":"inactivo"}}',
-                'order' => 7,
+                'order' => 8,
             ),
             60 => 
             array (
@@ -987,13 +987,13 @@ class DataRowsTableSeeder extends Seeder
                 'type' => 'timestamp',
                 'display_name' => 'Creado',
                 'required' => 0,
-                'browse' => 1,
+                'browse' => 0,
                 'read' => 1,
                 'edit' => 0,
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 8,
+                'order' => 10,
             ),
             61 => 
             array (
@@ -1009,7 +1009,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 9,
+                'order' => 11,
             ),
             62 => 
             array (
@@ -1025,7 +1025,7 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 10,
+                'order' => 12,
             ),
             63 => 
             array (
@@ -1041,7 +1041,103 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{"resize":{"width":"1000","height":null},"quality":"70%","upsize":true,"thumbnails":[{"name":"medium","scale":"50%"},{"name":"small","scale":"25%"},{"name":"cropped","crop":{"width":"300","height":"250"}}]}',
+                'order' => 9,
+            ),
+            64 => 
+            array (
+                'id' => 65,
+                'data_type_id' => 6,
+                'field' => 'gender',
+                'type' => 'select_dropdown',
+                'display_name' => 'Género',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"display":{"width":6},"default":"masculino","options":{"femenino":"femenino","masculino":"masculino"}}',
+                'order' => 5,
+            ),
+            65 => 
+            array (
+                'id' => 66,
+                'data_type_id' => 6,
+                'field' => 'min_age',
+                'type' => 'number',
+                'display_name' => 'Edad mínima',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"display":{"width":6}}',
+                'order' => 6,
+            ),
+            66 => 
+            array (
+                'id' => 67,
+                'data_type_id' => 6,
+                'field' => 'max_age',
+                'type' => 'number',
+                'display_name' => 'Edad máxima',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"display":{"width":6}}',
                 'order' => 7,
+            ),
+            67 => 
+            array (
+                'id' => 68,
+                'data_type_id' => 4,
+                'field' => 'primary_color',
+                'type' => 'color',
+                'display_name' => 'Color local',
+                'required' => 0,
+                'browse' => 0,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"display":{"width":6}}',
+                'order' => 4,
+            ),
+            68 => 
+            array (
+                'id' => 69,
+                'data_type_id' => 4,
+                'field' => 'secondary_color',
+                'type' => 'color',
+                'display_name' => 'Color visitante',
+                'required' => 0,
+                'browse' => 0,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"display":{"width":6}}',
+                'order' => 5,
+            ),
+            69 => 
+            array (
+                'id' => 70,
+                'data_type_id' => 8,
+                'field' => 'gender',
+                'type' => 'text',
+                'display_name' => 'Género',
+                'required' => 0,
+                'browse' => 0,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"display":{"width":6}}',
+                'order' => 5,
             ),
         ));
         

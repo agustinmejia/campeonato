@@ -18,6 +18,7 @@ class CreatePlayersTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('ci')->nullable();
+            $table->string('gender')->nullable();
             $table->date('birthday')->nullable();
             $table->string('origin')->nullable();
             $table->string('image')->nullable();

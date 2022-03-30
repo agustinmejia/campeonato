@@ -17,6 +17,8 @@ class CreateClubsTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('logo')->nullable();
+            $table->string('primary_color')->nullable();
+            $table->string('secondary_color')->nullable();
             $table->string('status')->nullable()->default('activo');
             $table->timestamps();
             $table->softDeletes();

@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Controllers
+use App\Http\Controllers\TeamController;
+use App\Http\Controllers\PlayersController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +28,14 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+
+    Route::get('players/create', [PlayersController::class, 'create'])->name('voyager.players.create');
+    Route::post('players/store', [PlayersController::class, 'store'])->name('voyager.players.store');
+    Route::get('players/{id}/edit', [PlayersController::class, 'edit'])->name('voyager.players.edit');
+    Route::put('players/{id}', [PlayersController::class, 'update'])->name('voyager.players.update');
+    Route::get('players/{id}/print', [PlayersController::class, 'print'])->name('players.print');
+
+    Route::get('clubs/{id}/teams', [TeamController::class, 'teams']);
 });
 
 // Clear cache

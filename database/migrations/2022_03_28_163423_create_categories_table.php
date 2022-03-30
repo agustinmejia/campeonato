@@ -17,6 +17,9 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->foreignId('division_id')->nullable()->constrained('divisions');
             $table->string('name')->nullable();
+            $table->string('gender')->nullable();
+            $table->smallInteger('min_age')->nullable();
+            $table->smallInteger('max_age')->nullable();
             $table->smallInteger('status')->nullable()->default(1);
             $table->timestamps();
             $table->softDeletes();

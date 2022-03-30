@@ -9,4 +9,5 @@
 composer install
 cp .env.example .env
 php artisan template:install
+chmod -R 777 storage bootstrap/cache
 ```
