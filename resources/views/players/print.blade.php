@@ -21,6 +21,7 @@
                 font-family: 'Roboto', Arial, Helvetica, sans-serif;
             }
             .container{
+                position: relative;
                 margin: 50px auto;
                 width: 10cm;
                 border: 1px solid black;
@@ -72,7 +73,7 @@
                     <td>
                         <table width="100%" cellspacing="0">
                             <tr>
-                                <td><b class="text-red">DIVISIÓN</b></td>
+                                <td style="max-width: 100px"><b class="text-red">DIVISIÓN</b></td>
                                 <td>
                                     <select id="select-division">
                                         @foreach ($player->teams as $item)
@@ -89,12 +90,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><b class="text-red">CI</b></td>
-                                <td>{{ $player->ci }}</td>
+                                <td><b class="text-red">NOMBRE</b></td>
+                                <td>{{ Str::upper($player->first_name.' '.$player->last_name) }}</td>
                             </tr>
                             <tr>
-                                <td><b class="text-red">NOMBRE COMPLETO</b></td>
-                                <td>{{ Str::upper($player->first_name.' '.$player->last_name) }}</td>
+                                <td><b class="text-red">CI</b></td>
+                                <td>{{ $player->ci }}</td>
                             </tr>
                             <tr>
                                 <td><b class="text-red">GÉNERO</b></td>
@@ -119,11 +120,14 @@
                 </tr>
             </table>
             
-            <div style="text-align: center; margin-top: 30px">
+            <div style="text-align: center; margin-top: 25px">
                 <br>
                 <b>JUGADOR</b>
             </div>
 
+            <div style="position: absolute; bottom: 22px; right: 10px">
+                {!! QrCode::size(40)->generate($player->first_name.' '.$player->last_name.' CI: '.$player->ci.' Club: '.Str::upper($player->teams[0]->team->club->name)) !!}
+            </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
