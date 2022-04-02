@@ -120,12 +120,12 @@
                 </tr>
             </table>
             
-            <div style="text-align: center; margin-top: 25px">
+            <div style="text-align: center; margin-top: 15px">
                 <br>
                 <b>JUGADOR</b>
             </div>
 
-            <div style="position: absolute; bottom: 22px; right: 10px">
+            <div style="position: absolute; bottom: 25px; right: 10px">
                 {!! QrCode::size(40)->generate($player->first_name.' '.$player->last_name.' CI: '.$player->ci.' Club: '.Str::upper($player->teams[0]->team->club->name)) !!}
             </div>
         </div>

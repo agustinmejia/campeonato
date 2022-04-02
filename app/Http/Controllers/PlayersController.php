@@ -20,6 +20,11 @@ class PlayersController extends Controller
         $this->middleware('auth');
     }
 
+    public function index(){
+        $players = Player::where('deleted_at', NULL)->orderBy('id', 'DESC')->get();
+        return view('players.browse', compact('players'));
+    }
+
     public function create(){
         return view('players.edit-add');
     }
@@ -88,9 +93,20 @@ class PlayersController extends Controller
         }
     }
 
-    public function print($id){
+    public function print($id, $type){
         $player = Player::where('id', $id)->with('teams.team')->first();
-        return view('players.print', compact('player'));
+        switch ($type) {
+            case 'credencial':
+                return view('players.print.credential', compact('player'));
+                break;
+            case 'certificado':
+                return view('players.print.certificate', compact('player'));
+                break;
+            default:
+                return 'Error 404';
+                break;
+        }
+        
     }
 
     // ===============================================
