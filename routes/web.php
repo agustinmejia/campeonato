@@ -34,6 +34,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('players/store', [PlayersController::class, 'store'])->name('voyager.players.store');
     Route::get('players/{id}/edit', [PlayersController::class, 'edit'])->name('voyager.players.edit');
     Route::put('players/{id}', [PlayersController::class, 'update'])->name('voyager.players.update');
+    Route::get('players/{id}/transfers', [PlayersController::class, 'transfers'])->name('players.transfers');
+    Route::post('players/{id}/transfers', [PlayersController::class, 'transfers_store'])->name('players.transfers.store');
+    Route::get('players/transfers/{id}', [PlayersController::class, 'transfers_print'])->name('players.transfers.print');
     Route::get('players/{id}/print/{type}', [PlayersController::class, 'print'])->name('players.print');
 
     Route::get('clubs/{id}/teams', [TeamController::class, 'teams']);

@@ -25,4 +25,8 @@ class Player extends Model
     public function teams(){
         return $this->hasMany(TeamPlayer::class);
     }
+
+    public function transfers(){
+        return $this->hasMany(PlayersTransfer::class);
+    }
 }

@@ -11,8 +11,7 @@ class TeamController extends Controller
 {
     public function teams($id)
     {
-        $club = Club::find($id);
-        $teams = $club->teams;
-        return response()->json($teams);
+        $club = Club::with('teams.category')->where('id', $id)->first();
+        return response()->json($club);
     }
 }

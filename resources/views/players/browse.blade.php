@@ -9,7 +9,7 @@
                 <h1 class="page-title">
                     <i class="voyager-person"></i> Jugadores
                 </h1>
-                <a href="#" class="btn btn-success btn-add-new">
+                <a href="{{ route('voyager.players.create') }}" class="btn btn-success btn-add-new">
                     <i class="voyager-plus"></i> <span>Crear</span>
                 </a>
             </div>
@@ -47,7 +47,7 @@
                                             <td>{{ $item->ci }}</td>
                                             <td>{{ $item->birthday }}</td>
                                             <td>{{ $item->origin }}</td>
-                                            <td>{{ $item->teams[0]->team->club->name }}</td>
+                                            <td>{{ count($item->teams) > 0 ? $item->teams[0]->team ? $item->teams[0]->team->club->name : 'No definido' : 'No definido' }}</td>
                                             <td>
                                                 @if ($item->image)
                                                     <img src="{{ asset('storage/'.$item->image) }}" width="50px" />
@@ -57,12 +57,14 @@
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-default dropdown-toggle"
                                                             data-toggle="dropdown">
-                                                      Imprimir <span class="caret"></span>
+                                                      Más <span class="caret"></span>
                                                     </button>
                                                   
                                                     <ul class="dropdown-menu" role="menu">
-                                                      <li><a href="{{ route('players.print', ['id' => $item->id, 'type' => 'credencial']) }}" target="_blank">Credencial</a></li>
-                                                      <li><a href="{{ route('players.print', ['id' => $item->id, 'type' => 'certificado']) }}" target="_blank">kardex</a></li>
+                                                        <li><a href="{{ route('players.print', ['id' => $item->id, 'type' => 'credencial']) }}" target="_blank">Imprimir Credencial</a></li>
+                                                        <li><a href="{{ route('players.print', ['id' => $item->id, 'type' => 'certificado']) }}" target="_blank">Imprimir kardex</a></li>
+                                                        <li class="divider"></li>
+                                                        <li><a href="{{ route('players.transfers', ['id' => $item->id]) }}">Traspasos</a></li>
                                                     </ul>
                                                   </div>
                                                 <a href="{{ route('voyager.players.show', ['id' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">

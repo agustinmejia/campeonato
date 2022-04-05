@@ -29,13 +29,16 @@
             .text-red{
                 color: red;
             }
+            .text-bold{
+                font-weight: bold
+            }
             #span-category{
                 display: none
             }
             .qr-code{
                 display: none;
                 position: fixed;
-                bottom: 0px;
+                bottom: 10px;
                 right: 0px
             }
             @media print{
@@ -79,8 +82,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-align: right"><b class="text-red">CLUB</b></td>
-                    <td>
+                    <td style="text-align: right"><b class="text-red">NOMBRE DEL CLUB</b></td>
+                    <td class="text-bold">
                         {{ Str::upper($player->teams[0]->team->club->name) }}
                     </td>
                 </tr>
@@ -92,40 +95,38 @@
                                 <option value="{{ $item->team->category->name }}" data-team="{{ $item->team->name }}">{{ $item->team->category->name }}</option>
                             @endforeach
                         </select>
-                        <span id="span-category">{{ Str::upper($player->teams[0]->team->category->name) }}</span>
+                        <b id="span-category">{{ Str::upper($player->teams[0]->team->category->name) }}</b>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: right"><b class="text-red">EQUIPO</b></td>
                     <td>
-                        <span id="span-team">{{ Str::upper($player->teams[0]->team->name) }}</span>
+                        <b id="span-team">{{ Str::upper($player->teams[0]->team->name) }}</b>
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-align: right"><b class="text-red">CÓDIGO</b></td>
-                    <td>
-                        <span>{{ str_pad($player->id, 4, "0", STR_PAD_LEFT) }}</span>
-                    </td>
+                    <td style="text-align: right"><b class="text-red">CÓDIGO DE JUGADOR</b></td>
+                    <td><b>{{ str_pad($player->id, 4, "0", STR_PAD_LEFT) }}</b></td>
                 </tr>
                 <tr>
-                    <td style="text-align: right"><b class="text-red">NOMBRE</b></td>
-                    <td>{{ Str::upper($player->first_name.' '.$player->last_name) }}</td>
+                    <td style="text-align: right"><b class="text-red">NOMBRE COMPLETO</b></td>
+                    <td><b>{{ Str::upper($player->first_name.' '.$player->last_name) }}</b></td>
                 </tr>
                 <tr>
                     <td style="text-align: right"><b class="text-red">CI</b></td>
-                    <td>{{ $player->ci }}</td>
+                    <td><b>{{ $player->ci }}</b></td>
                 </tr>
                 <tr>
                     <td style="text-align: right"><b class="text-red">GÉNERO</b></td>
-                    <td>{{ Str::upper($player->gender) }}</td>
+                    <td><b>{{ Str::upper($player->gender) }}</b></td>
                 </tr>
                 <tr>
-                    <td style="text-align: right"><b class="text-red">FECHA DE NAC.</b></td>
-                    <td>{{ date('d/m/Y', strtotime($player->birthday)) }}</td>
+                    <td style="text-align: right"><b class="text-red">FECHA DE NACIMIENTO</b></td>
+                    <td><b>{{ date('d/m/Y', strtotime($player->birthday)) }}</b></td>
                 </tr>
                 <tr>
-                    <td style="text-align: right"><b class="text-red">LUGAR DE NAC.</b></td>
-                    <td>{{ Str::upper($player->origin) }}</td>
+                    <td style="text-align: right"><b class="text-red">LUGAR DE NACIMIENTO</b></td>
+                    <td><b>{{ Str::upper($player->origin) }}</b></td>
                 </tr>
             </table>
             <div style="margin-top: 100px">
@@ -133,7 +134,7 @@
                     <tr>
                         <td width="33%">.......................................<br>PDTE. COMITÉ TÉCNICO</td>
                         <td width="34%">.......................................<br>JUGADOR</td>
-                        <td width="33%">.......................................<br>PRESIDENTE</td>
+                        <td width="33%">.......................................<br>PRESIDENTE L.D.R.I.</td>
                     </tr>
                 </table>
             </div>

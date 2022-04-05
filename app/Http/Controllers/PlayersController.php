@@ -13,6 +13,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 // Models
 use App\Models\Player;
 use App\Models\TeamPlayer;
+use App\Models\PlayersTransfer;
 
 class PlayersController extends Controller
 {
@@ -21,7 +22,11 @@ class PlayersController extends Controller
     }
 
     public function index(){
-        $players = Player::where('deleted_at', NULL)->orderBy('id', 'DESC')->get();
+        $players = Player::where('deleted_at', NULL)
+                    ->with(['teams' => function($q){
+                        $q->where('status', 'activo')->where('deleted_at', NULL);
+                    }, 'teams.team'])
+                    ->orderBy('id', 'DESC')->get();
         return view('players.browse', compact('players'));
     }
 
@@ -58,7 +63,10 @@ class PlayersController extends Controller
     }
 
     public function edit($id){
-        $player = Player::where('id', $id)->with('teams.team')->first();
+        $player = Player::where('id', $id)->with(['teams' => function($q){
+                        $q->where('status', 'activo')->where('deleted_at', NULL);
+                    }, 'teams.team'])
+                    ->first();
         return view('players.edit-add', compact('player'));
     }
 
@@ -86,11 +94,54 @@ class PlayersController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('voyager.players.index')->with(['message' => 'Jugador editado exitosamente.', 'alert-type' => 'success']);
+            return redirect()->route('voyager.players.index')->with(['message' => 'Jugador editado exitosamente', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
             DB::rollback();
             // dd($th);
         }
+    }
+
+    public function transfers($id){
+        $player = Player::with(['teams' => function($q){
+                        $q->where('status', 'activo')->where('deleted_at', NULL);
+                    }, 'teams.team', 'transfers' => function($q){
+                        $q->orderBy('id', 'DESC');
+                    }])
+                    ->where('id', $id)->where('deleted_at', NULL)
+                    ->first();
+        return view('players.transfers', compact('player'));
+    }
+
+    public function transfers_store($id, Request $request){
+        DB::beginTransaction();
+        try {
+            TeamPlayer::where('player_id', $id)->where('status', 'activo')->update([
+                'status' => 'inactivo'
+            ]);
+
+            PlayersTransfer::create([
+                'user_id' => Auth::user()->id,
+                'player_id' => $id,
+                'origin' => $request->origin,
+                'destiny' => $request->destiny,
+                'observations' => $request->observations,
+                'date' => $request->date
+            ]);
+
+            DB::commit();
+            return redirect()->route('players.transfers', ['id' => $id])->with(['message' => 'Transferencia registrada exitosamente', 'alert-type' => 'success']);
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            //throw $th;
+            return redirect()->route('players.transfers', ['id' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
+        }
+    }
+
+    public function transfers_print($id){
+        $transfer = PlayersTransfer::with(['player', 'origin_club', 'destiny_club'])
+                    ->where('id', $id)->first();
+        return view('players.print.transfer', compact('transfer'));
     }
 
     public function print($id, $type){

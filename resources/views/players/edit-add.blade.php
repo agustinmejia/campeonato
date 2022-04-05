@@ -101,10 +101,12 @@
                 $('select[name="origin"]').val('{{ $player->origin }}');
                 $('select[name="origin"]').trigger('change');
                 let teams = @json($player->teams);
-                $('#select-club_id').val(teams[0].team.club_id);
-                setTimeout(() => {
-                    $('#select-club_id').trigger('change');
-                }, 0);
+                if(teams.length > 0){
+                    $('#select-club_id').val(teams[0].team.club_id);
+                    setTimeout(() => {
+                        $('#select-club_id').trigger('change');
+                    }, 0);
+                }
             @endisset
 
             $('#select-club_id').change(function(){
@@ -114,8 +116,8 @@
                     dataType: 'json',
                     success: function(data){
                         $('#select-team_id').empty();
-                        $.each(data, (index, value) => {
-                            $('#select-team_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        $.each(data.teams, (index, value) => {
+                            $('#select-team_id').append('<option value="' + value.id + '">' + value.name + ' - ' + value.category.name + '</option>');
                         });
 
                         @isset($player)
