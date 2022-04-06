@@ -98,6 +98,7 @@ class PlayersController extends Controller
         } catch (\Throwable $th) {
             DB::rollback();
             // dd($th);
+            return redirect()->route('voyager.players.index')->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
         }
     }
 
@@ -118,6 +119,13 @@ class PlayersController extends Controller
             TeamPlayer::where('player_id', $id)->where('status', 'activo')->update([
                 'status' => 'inactivo'
             ]);
+
+            foreach ($request->team_id as $value) {
+                TeamPlayer::create([
+                    'team_id' => $value,
+                    'player_id' => $id,
+                ]);
+            }
 
             PlayersTransfer::create([
                 'user_id' => Auth::user()->id,
@@ -158,6 +166,38 @@ class PlayersController extends Controller
                 break;
         }
         
+    }
+
+    public function transfers_delete($id, Request $request){
+        DB::beginTransaction();
+        try {
+
+            $transfer = PlayersTransfer::find($request->id);
+            $transfer->delete();
+
+            // Buscar el último equipo asociado al jugador
+            $team_player = TeamPlayer::where('player_id', $transfer->player_id)
+                            ->where('status', 'inactivo')->where('deleted_at', NULL)
+                            ->orderBy('id', 'DESC')->first();
+            
+            // Anular equipos asociados al jugador
+            TeamPlayer::where('player_id', $transfer->player_id)
+                            ->where('status', 'activo')->update(['status' => 'inactivo']);
+            
+            // Restaurar el último equipo asociado al jugador
+            if($team_player){
+                $team_player->status = 'activo';
+                $team_player->update();
+            }
+
+            DB::commit();
+            return redirect()->route('players.transfers', ['id' => $id])->with(['message' => 'Transferencia anulada exitosamente', 'alert-type' => 'success']);
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            dd($th);
+            return redirect()->route('players.transfers', ['id' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
+        }
     }
 
     // ===============================================

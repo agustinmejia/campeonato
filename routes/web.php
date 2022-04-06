@@ -38,6 +38,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('players/{id}/transfers', [PlayersController::class, 'transfers_store'])->name('players.transfers.store');
     Route::get('players/transfers/{id}', [PlayersController::class, 'transfers_print'])->name('players.transfers.print');
     Route::get('players/{id}/print/{type}', [PlayersController::class, 'print'])->name('players.print');
+    Route::post('players/{id}/transfers/delete', [PlayersController::class, 'transfers_delete'])->name('players.transfers.delete');
 
     Route::get('clubs/{id}/teams', [TeamController::class, 'teams']);
 });
