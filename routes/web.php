@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 // Controllers
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\PlayersController;
+use App\Http\Controllers\DelegatesController;
+use App\Http\Controllers\GameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +43,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('players/{id}/transfers/delete', [PlayersController::class, 'transfers_delete'])->name('players.transfers.delete');
 
     Route::get('clubs/{id}/teams', [TeamController::class, 'teams']);
+
+    Route::get('delegates/{id}/print', [DelegatesController::class, 'print'])->name('delegates.print');
+
+    Route::get('game', [GameController::class, 'index']);
 });
 
 // Clear cache

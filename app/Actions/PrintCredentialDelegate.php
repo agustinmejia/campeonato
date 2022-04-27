@@ -4,7 +4,7 @@ namespace App\Actions;
 
 use TCG\Voyager\Actions\AbstractAction;
 
-class PrintCredential extends AbstractAction
+class PrintCredentialDelegate extends AbstractAction
 {
     public function getTitle()
     {
@@ -32,11 +32,11 @@ class PrintCredential extends AbstractAction
 
     public function getDefaultRoute()
     {
-        return route('players.print', ['id' => $this->data->id]);
+        return route('delegates.print', ['id' => $this->data->id]);
     }
     
     public function shouldActionDisplayOnDataType()
     {
-        return $this->dataType->slug == 'players';
+        return $this->dataType->slug == 'delegates';
     }
 }

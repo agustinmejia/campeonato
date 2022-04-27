@@ -24,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Voyager::addAction(\App\Actions\PrintCredential::class);
+        Voyager::addAction(\App\Actions\PrintCredentialDelegate::class);
     }
 }

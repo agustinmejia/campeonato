@@ -81,8 +81,8 @@
                                             <tr>
                                                 <td>{{ $cont }}</td>
                                                 <td>{{ str_pad($item->id, 4, "0", STR_PAD_LEFT) }}</td>
-                                                <td>{{ $item->origin_club->name }}</td>
-                                                <td>{{ $item->destiny_club->name }}</td>
+                                                <td>{{ $item->origin_club ? $item->origin_club->name : 'No definido' }}</td>
+                                                <td>{{ $item->destiny_club ? $item->destiny_club->name : 'No definido' }}</td>
                                                 <td>{{ date('d/m/Y', strtotime($item->date)) }}<br><small>{{ Carbon\Carbon::parse($item->date)->diffForHumans() }}</small></td>
                                                 <td class="no-sort no-click bread-actions text-right">
                                                     <a href="{{ route('players.transfers.print', ['id' => $item->id, 'type' => 'transfer']) }}" title="Imprimir traspase" target="_blank" class="btn btn-sm btn-default view">
@@ -136,7 +136,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="control-label" for="first_name">Equipo(es)</label>
+                                <label class="control-label" for="first_name">Equipo(s)</label>
                                 <select name="team_id[]" id="select-team_id" class="form-control select2" multiple required></select>
                             </div>
                             <div class="col-md-12">

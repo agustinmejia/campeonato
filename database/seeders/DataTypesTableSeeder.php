@@ -161,7 +161,25 @@ class DataTypesTableSeeder extends Seeder
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
                 'created_at' => '2022-03-28 18:21:21',
-                'updated_at' => '2022-03-30 00:24:37',
+                'updated_at' => '2022-04-27 00:06:39',
+            ),
+            8 => 
+            array (
+                'id' => 9,
+                'name' => 'delegates',
+                'slug' => 'delegates',
+                'display_name_singular' => 'Delegado',
+                'display_name_plural' => 'Delegados',
+                'icon' => 'voyager-people',
+                'model_name' => 'App\\Models\\Delegate',
+                'policy_name' => NULL,
+                'controller' => NULL,
+                'description' => NULL,
+                'generate_permissions' => 1,
+                'server_side' => 0,
+                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
+                'created_at' => '2022-04-27 00:07:49',
+                'updated_at' => '2022-04-27 01:01:21',
             ),
         ));
         
