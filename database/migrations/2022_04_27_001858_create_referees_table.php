@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChampionshipsTable extends Migration
+class CreateRefereesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateChampionshipsTable extends Migration
      */
     public function up()
     {
-        Schema::create('championships', function (Blueprint $table) {
+        Schema::create('referees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->nullable()->constrained('categories');
-            $table->string('name')->nullable();
-            $table->date('start')->nullable();
-            $table->date('finish')->nullable();
-            $table->smallInteger('year')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('ci')->nullable();
+            $table->string('image')->nullable();
             $table->string('status')->nullable()->default('activo');
             $table->timestamps();
             $table->softDeletes();
@@ -33,6 +32,6 @@ class CreateChampionshipsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('championships');
+        Schema::dropIfExists('referees');
     }
 }

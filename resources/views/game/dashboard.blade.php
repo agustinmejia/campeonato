@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', 'Ver Title')
+@section('page_title', 'Viendo juego')
 
 @section('content')
     <div class="page-content read container-fluid">
@@ -42,65 +42,69 @@
                         <div class="panel panel-bordered">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 50px">N&deg;</th>
-                                                <th>Nombre</th>
-                                                <th class="text-right">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                                $cont = 1;
-                                            @endphp
-                                            @foreach(['Juan perez', 'José Mendez', 'Pedro Nosa', 'Mario Mendez', 'Luis Suarez', 'Marcelo Perez'] as $item)
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
                                                 <tr>
-                                                    <td><h4>{{ $cont }}</h4></td>
-                                                    <td><h4>{{ $item }}</h4></td>
-                                                    <td style="width: 120px;" class="td-actions text-right">
-                                                        <a href="#"><img src="{{ asset('images/ball.png') }}" width="25px" alt=""></a>
-                                                        <a href="#"><img src="{{ asset('images/yellow-card.png') }}" width="25px" alt=""></a>
-                                                        <a href="#"><img src="{{ asset('images/red-card.png') }}" width="25px" alt=""></a>
-                                                    </td>
+                                                    <th style="width: 50px">N&deg;</th>
+                                                    <th>Nombre</th>
+                                                    <th class="text-right">Acciones</th>
                                                 </tr>
+                                            </thead>
+                                            <tbody>
                                                 @php
-                                                    $cont++;
+                                                    $cont = 1;
                                                 @endphp
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                @foreach(['Juan perez', 'José Mendez', 'Pedro Nosa', 'Mario Mendez', 'Luis Suarez', 'Marcelo Perez'] as $item)
+                                                    <tr>
+                                                        <td><h4>{{ $cont }}</h4></td>
+                                                        <td><h4>{{ $item }}</h4></td>
+                                                        <td style="width: 120px;" class="td-actions text-right">
+                                                            <a href="#"><img src="{{ asset('images/ball.png') }}" width="25px" alt=""></a>
+                                                            <a href="#"><img src="{{ asset('images/yellow-card.png') }}" width="25px" alt=""></a>
+                                                            <a href="#"><img src="{{ asset('images/red-card.png') }}" width="25px" alt=""></a>
+                                                        </td>
+                                                    </tr>
+                                                    @php
+                                                        $cont++;
+                                                    @endphp
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
 
                                 <div class="col-xs-6">
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 50px">N&deg;</th>
-                                                <th>Nombre</th>
-                                                <th class="text-right">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                                $cont = 1;
-                                            @endphp
-                                            @foreach(['Juan perez', 'José Mendez', 'Pedro Nosa', 'Mario Mendez', 'Luis Suarez', 'Marcelo Perez'] as $item)
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
                                                 <tr>
-                                                    <td><h4>{{ $cont }}</h4></td>
-                                                    <td><h4>{{ $item }}</h4></td>
-                                                    <td style="width: 120px;" class="td-actions text-right">
-                                                        <a href="#"><img src="{{ asset('images/ball.png') }}" width="25px" alt=""></a>
-                                                        <a href="#"><img src="{{ asset('images/yellow-card.png') }}" width="25px" alt=""></a>
-                                                        <a href="#"><img src="{{ asset('images/red-card.png') }}" width="25px" alt=""></a>
-                                                    </td>
+                                                    <th style="width: 50px">N&deg;</th>
+                                                    <th>Nombre</th>
+                                                    <th class="text-right">Acciones</th>
                                                 </tr>
+                                            </thead>
+                                            <tbody>
                                                 @php
-                                                    $cont++;
+                                                    $cont = 1;
                                                 @endphp
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                @foreach(['Juan perez', 'José Mendez', 'Pedro Nosa', 'Mario Mendez', 'Luis Suarez', 'Marcelo Perez'] as $item)
+                                                    <tr>
+                                                        <td><h4>{{ $cont }}</h4></td>
+                                                        <td><h4>{{ $item }}</h4></td>
+                                                        <td style="width: 120px;" class="td-actions text-right">
+                                                            <a href="#"><img src="{{ asset('images/ball.png') }}" width="25px" alt=""></a>
+                                                            <a href="#"><img src="{{ asset('images/yellow-card.png') }}" width="25px" alt=""></a>
+                                                            <a href="#"><img src="{{ asset('images/red-card.png') }}" width="25px" alt=""></a>
+                                                        </td>
+                                                    </tr>
+                                                    @php
+                                                        $cont++;
+                                                    @endphp
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -152,12 +156,16 @@
         }
         function timer() {
             t = setTimeout(add, 1000);
+            start.disabled = true;
+            stop.disabled = false;
         }
 
         // timer();
         start.onclick = timer;
         stop.onclick = function() {
             clearTimeout(t);
+            start.disabled = false;
+            stop.disabled = true;
         }
         reset.onclick = function() {
             let time = window.prompt('Ingresa el tiempo actual');

@@ -1,15 +1,15 @@
 @extends('voyager::master')
 
-@section('page_title', 'Viendo Registros')
+@section('page_title', 'Viendo Campeonatos')
 
 @section('page_header')
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
                 <h1 class="page-title">
-                    <i class="voyager-basket"></i> Registros
+                    <i class="voyager-list"></i> Campeonatos
                 </h1>
-                <a href="#" class="btn btn-success btn-add-new">
+                <a href="{{ route('championships.create') }}" class="btn btn-success btn-add-new">
                     <i class="voyager-plus"></i> <span>Crear</span>
                 </a>
             </div>

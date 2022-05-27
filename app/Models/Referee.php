@@ -6,16 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Referee extends Model
 {
     use HasFactory, SoftDeletes;
     protected $dates = ['deleted_at'];
-
-    public function division(){
-        return $this->belongsTo(Division::class);
-    }
-
-    public function teams(){
-        return $this->hasMany(Team::class);
-    }
 }

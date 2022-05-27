@@ -7,6 +7,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\PlayersController;
 use App\Http\Controllers\DelegatesController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\ChampionshipsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('clubs/{id}/teams', [TeamController::class, 'teams']);
 
     Route::get('delegates/{id}/print', [DelegatesController::class, 'print'])->name('delegates.print');
+
+    Route::resource('championships', ChampionshipsController::class);
 
     Route::get('game', [GameController::class, 'index']);
 });

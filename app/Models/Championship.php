@@ -10,4 +10,12 @@ class Championship extends Model
 {
     use HasFactory, SoftDeletes;
     protected $dates = ['deleted_at'];
+    protected $fillable = [
+        'category_id',
+        'name',
+        'start',
+        'finish',
+        'year',
+        'status'
+    ];
 }
