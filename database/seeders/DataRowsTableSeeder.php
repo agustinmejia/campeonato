@@ -32,7 +32,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 0,
                 'add' => 0,
                 'delete' => 0,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 1,
             ),
             1 => 
@@ -48,7 +48,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 2,
             ),
             2 => 
@@ -64,7 +64,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
+                'details' => '{}',
                 'order' => 3,
             ),
             3 => 
@@ -80,8 +80,8 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 0,
-                'details' => NULL,
-                'order' => 4,
+                'details' => '{}',
+                'order' => 5,
             ),
             4 => 
             array (
@@ -96,8 +96,8 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 0,
                 'add' => 0,
                 'delete' => 0,
-                'details' => NULL,
-                'order' => 5,
+                'details' => '{}',
+                'order' => 6,
             ),
             5 => 
             array (
@@ -112,8 +112,8 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 0,
                 'add' => 0,
                 'delete' => 0,
-                'details' => NULL,
-                'order' => 6,
+                'details' => '{}',
+                'order' => 7,
             ),
             6 => 
             array (
@@ -128,8 +128,8 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 0,
                 'add' => 0,
                 'delete' => 0,
-                'details' => NULL,
-                'order' => 7,
+                'details' => '{}',
+                'order' => 8,
             ),
             7 => 
             array (
@@ -144,8 +144,8 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
-                'order' => 8,
+                'details' => '{}',
+                'order' => 10,
             ),
             8 => 
             array (
@@ -160,8 +160,8 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 0,
-                'details' => '{"model":"TCG\\\\Voyager\\\\Models\\\\Role","table":"roles","type":"belongsTo","column":"role_id","key":"id","label":"display_name","pivot_table":"roles","pivot":0}',
-                'order' => 10,
+                'details' => '{"model":"TCG\\\\Voyager\\\\Models\\\\Role","table":"roles","type":"belongsTo","column":"role_id","key":"id","label":"display_name","pivot_table":"roles","pivot":"0","taggable":"0"}',
+                'order' => 12,
             ),
             9 => 
             array (
@@ -171,13 +171,13 @@ class DataRowsTableSeeder extends Seeder
                 'type' => 'relationship',
                 'display_name' => 'Roles',
                 'required' => 0,
-                'browse' => 1,
-                'read' => 1,
-                'edit' => 1,
-                'add' => 1,
+                'browse' => 0,
+                'read' => 0,
+                'edit' => 0,
+                'add' => 0,
                 'delete' => 0,
                 'details' => '{"model":"TCG\\\\Voyager\\\\Models\\\\Role","table":"roles","type":"belongsToMany","column":"id","key":"id","label":"display_name","pivot_table":"user_roles","pivot":"1","taggable":"0"}',
-                'order' => 11,
+                'order' => 13,
             ),
             10 => 
             array (
@@ -192,8 +192,8 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 0,
                 'add' => 0,
                 'delete' => 0,
-                'details' => NULL,
-                'order' => 12,
+                'details' => '{}',
+                'order' => 15,
             ),
             11 => 
             array (
@@ -346,14 +346,14 @@ class DataRowsTableSeeder extends Seeder
                 'field' => 'role_id',
                 'type' => 'text',
                 'display_name' => 'Role',
-                'required' => 1,
+                'required' => 0,
                 'browse' => 1,
                 'read' => 1,
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => NULL,
-                'order' => 9,
+                'details' => '{}',
+                'order' => 11,
             ),
             21 => 
             array (
@@ -1330,6 +1330,54 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '{"display":{"width":6},"validation":{"rule":"required|max:191"}}',
                 'order' => 5,
+            ),
+            82 => 
+            array (
+                'id' => 88,
+                'data_type_id' => 1,
+                'field' => 'email_verified_at',
+                'type' => 'timestamp',
+                'display_name' => 'Email Verified At',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{}',
+                'order' => 9,
+            ),
+            83 => 
+            array (
+                'id' => 89,
+                'data_type_id' => 1,
+                'field' => 'club_id',
+                'type' => 'text',
+                'display_name' => 'Club Id',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{}',
+                'order' => 4,
+            ),
+            84 => 
+            array (
+                'id' => 90,
+                'data_type_id' => 1,
+                'field' => 'user_belongsto_club_relationship',
+                'type' => 'relationship',
+                'display_name' => 'Club',
+                'required' => 0,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"model":"App\\\\Models\\\\Club","table":"clubs","type":"belongsTo","column":"club_id","key":"id","label":"name","pivot_table":"categories","pivot":"0","taggable":"0"}',
+                'order' => 14,
             ),
         ));
         

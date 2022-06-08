@@ -26,6 +26,9 @@ class PlayersController extends Controller
                     ->with(['teams' => function($q){
                         $q->where('status', 'activo')->where('deleted_at', NULL);
                     }, 'teams.team'])
+                    ->whereHas('teams.team', function($q){
+                        $q->whereRaw(Auth::user()->club_id ? 'club_id = '.Auth::user()->club_id : 1);
+                    })
                     ->orderBy('id', 'DESC')->get();
         return view('players.browse', compact('players'));
     }

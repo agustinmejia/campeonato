@@ -30,12 +30,12 @@ class DataTypesTableSeeder extends Seeder
                 'model_name' => 'TCG\\Voyager\\Models\\User',
                 'policy_name' => 'TCG\\Voyager\\Policies\\UserPolicy',
                 'controller' => 'TCG\\Voyager\\Http\\Controllers\\VoyagerUserController',
-                'description' => '',
+                'description' => NULL,
                 'generate_permissions' => 1,
                 'server_side' => 0,
-                'details' => NULL,
+                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"desc","default_search_key":null,"scope":null}',
                 'created_at' => '2021-06-02 17:55:30',
-                'updated_at' => '2021-06-02 17:55:30',
+                'updated_at' => '2022-06-08 19:31:03',
             ),
             1 => 
             array (

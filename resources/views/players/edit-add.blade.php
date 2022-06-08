@@ -71,7 +71,7 @@
                                 <label class="control-label" for="team_id">Equipo(s)</label>
                                 <select name="team_id[]" id="select-team_id" class="form-control select2" multiple required></select>
                             </div>
-                            <div class="form-group  col-md-6">
+                            <div class="form-group col-md-6">
                                 <label class="control-label" for="image">Fotografía</label>
                                 <input type="file" name="image" accept="image/*">
                             </div>
