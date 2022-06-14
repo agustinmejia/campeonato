@@ -28,6 +28,7 @@ class PermissionsTableSeeder extends Seeder
         }
 
         Permission::generateFor('menus');
+        Permission::generateFor('permissions');
         Permission::generateFor('roles');
         Permission::generateFor('users');
         Permission::generateFor('settings');
@@ -47,6 +48,18 @@ class PermissionsTableSeeder extends Seeder
             Permission::firstOrCreate([
                 'key'        => $key,
                 'table_name' => 'players',
+            ]);
+        }
+
+
+        $keys = [
+            'browse_reportsplayers',
+        ];
+
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'reports',
             ]);
         }
     }

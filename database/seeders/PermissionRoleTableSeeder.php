@@ -32,6 +32,7 @@ class PermissionRoleTableSeeder extends Seeder
                                                 `table_name` = 'players' or
                                                 `table_name` = 'delegates' or
                                                 `table_name` = 'championships' or
+                                                `table_name` = 'reports' or
                                                 `table_name` = 'settings'")->get();
         $role->permissions()->sync($permissions->pluck('id')->all());
         
@@ -39,7 +40,8 @@ class PermissionRoleTableSeeder extends Seeder
         $role = Role::where('name', 'delegado_club')->firstOrFail();
         $permissions = Permission::whereRaw("   `key` = 'browse_admin' or
                                                 `key` = 'browse_players' or
-                                                `key` = 'read_players'")->get();
+                                                `key` = 'read_players' or
+                                                `table_name` = 'reports'")->get();
         $role->permissions()->sync($permissions->pluck('id')->all());
     }
 }

@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 
 // Controllers
-use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\PlayersController;
 use App\Http\Controllers\DelegatesController;
-use App\Http\Controllers\GameController;
+use App\Http\Controllers\GamesController;
 use App\Http\Controllers\ChampionshipsController;
+use App\Http\Controllers\ReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,13 +44,16 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('players/{id}/print/{type}', [PlayersController::class, 'print'])->name('players.print');
     Route::post('players/{id}/transfers/delete', [PlayersController::class, 'transfers_delete'])->name('players.transfers.delete');
 
-    Route::get('clubs/{id}/teams', [TeamController::class, 'teams']);
+    Route::get('clubs/{id}/teams', [TeamsController::class, 'teams']);
 
     Route::get('delegates/{id}/print', [DelegatesController::class, 'print'])->name('delegates.print');
 
     Route::resource('championships', ChampionshipsController::class);
 
-    Route::get('game', [GameController::class, 'index']);
+    Route::get('game', [GamesController::class, 'index']);
+
+    Route::get('reports/players', [ReportsController::class, 'players_index'])->name('reports.players.index');
+    Route::post('reports/players/list', [ReportsController::class, 'players_list'])->name('reports.players.list');
 });
 
 // Clear cache

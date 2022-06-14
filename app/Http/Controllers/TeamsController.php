@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 // Models
 use App\Models\Club;
 
-class TeamController extends Controller
+class TeamsController extends Controller
 {
     public function teams($id)
     {

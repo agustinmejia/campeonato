@@ -18,4 +18,8 @@ class Championship extends Model
         'year',
         'status'
     ];
+
+    public function teams(){
+        return $this->hasMany(ChampionshipTeam::class);
+    }
 }

@@ -37,7 +37,19 @@ class ChampionshipsController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
+        dd(array_unique(array_merge($request->local_id,$request->visitor_id), SORT_REGULAR));
+        try {
+            $championship = Championship::create([
+                'category_id' => $request->category_id,
+                'name' => $request->name,
+                'start' => $request->start,
+                'finish' => $request->finish,
+                'year' => date('Y', strtotime($request->start)) == date('Y', strtotime($request->finish)) ? date('Y', strtotime($request->start)) : date('Y', strtotime($request->start)).'-'.date('Y', strtotime($request->finish))
+            ]);
+        } catch (\Throwable $th) {
+            //dd($th);
+        }
     }
 
     /**
