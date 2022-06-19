@@ -162,6 +162,11 @@ if (\Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'http://') || \Ill
         toastr.error("toastr alert-type " + alertType + " is unknown");
     }
     @endif
+
+    function deleteItem(model, id){
+        let url = '{{ url("admin") }}/'+model+'/'+id;
+        $('#delete_form').attr('action', url);
+    }
 </script>
 @include('voyager::media.manager')
 @yield('javascript')

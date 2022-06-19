@@ -22,16 +22,26 @@
 
 @section('content')
     <div class="page-content browse container-fluid">
-        @include('voyager::alerts')
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body">
-                        
-                        <div class="table-responsive">
-                            <table id="dataTable" class="table table-hover">
-                            </table>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="dataTables_length" id="dataTable_length">
+                                    <label>Mostrar <select id="select-paginate" class="form-control input-sm">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select> registros</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" id="input-search" class="form-control">
+                            </div>
                         </div>
+                        <div class="row" id="results" style="min-height: 120px"></div>
                     </div>
                 </div>
             </div>
@@ -44,15 +54,27 @@
 @stop
 
 @section('javascript')
-    <script src="{{ url('js/main.js') }}"></script>
     <script>
-        $(document).ready(function() {
-
+        var countPage = 10, order = 'id', typeOrder = 'desc';
+        $(document).ready(() => {
+            list();
+            
+            $('#input-search').on('keyup', function(e){
+                if(e.keyCode == 13) {
+                    list();
+                }
+            });
+            $('#select-paginate').change(function(){
+                countPage = $(this).val();
+                list();
+            });
         });
-
-        function deleteItem(id){
-            let url = '{{ url("admin/ventas") }}/'+id;
-            $('#delete_form').attr('action', url);
+        function list(page = 1){
+            let url = '{{ url("admin/championships/list/ajax") }}';
+            let search = $('#input-search').val() ? $('#input-search').val() : '';
+            $.get(`${url}/${search}?paginate=${countPage}&page=${page}`, function(res){
+                $('#results').html(res);
+            });
         }
 
     </script>

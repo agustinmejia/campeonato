@@ -96,7 +96,7 @@
                 $('#table-fixtures').append(`
                     <tr class="tr-item" id="tr-${id}">
                         <td class="td-item"></td>
-                        <td><input type="text" name="tile[]" class="form-control" placeholder="Fecha #" required /></td>
+                        <td><input type="text" name="title[]" class="form-control" placeholder="Fecha #" required /></td>
                         <td>
                             <select name="local_id[]" class="form-control" required>
                                 <option selected disabled value="">--Equipo local--</option>

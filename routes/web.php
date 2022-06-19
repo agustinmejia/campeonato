@@ -49,8 +49,12 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('delegates/{id}/print', [DelegatesController::class, 'print'])->name('delegates.print');
 
     Route::resource('championships', ChampionshipsController::class);
-
-    Route::get('game', [GamesController::class, 'index']);
+    Route::get('championships/list/ajax/{search?}', [ChampionshipsController::class, 'list']);
+    Route::post('championships/{id}/details/enable', [ChampionshipsController::class, 'details_enable'])->name('championships.details.enable');
+    Route::get('championships/game/{id}', [ChampionshipsController::class, 'game'])->name('championships.game');
+    Route::post('championships/game/{id}/goal', [ChampionshipsController::class, 'game_goal'])->name('championships.game.goal');
+    Route::post('championships/game/{id}/card', [ChampionshipsController::class, 'game_card'])->name('championships.game.card');
+    Route::post('championships/game/{id}/finish', [ChampionshipsController::class, 'game_finish'])->name('championships.game.finish');
 
     Route::get('reports/players', [ReportsController::class, 'players_index'])->name('reports.players.index');
     Route::post('reports/players/list', [ReportsController::class, 'players_list'])->name('reports.players.list');

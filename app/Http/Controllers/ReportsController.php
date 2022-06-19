@@ -9,6 +9,10 @@ use App\Models\TeamPlayer;
 
 class ReportsController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
+    
     public function players_index(){
         return view('reports.players-index');
     }

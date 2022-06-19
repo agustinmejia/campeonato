@@ -13,10 +13,9 @@ class CreateChampionshipDetailGoalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('championship_detail_goals', function (Blueprint $table) {
+        Schema::create('championship_details_players_goals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('championship_id')->nullable()->constrained('championships');
-            $table->foreignId('player_id')->nullable()->constrained('players');
+            $table->foreignId('championship_details_player_id')->nullable()->constrained('championship_details_players')->index('championship_details_players_goals_championship_details_player');
             $table->foreignId('assistant_id')->nullable()->constrained('players');
             $table->string('type')->nullable()->default('normal');
             $table->string('time')->nullable();
@@ -33,6 +32,6 @@ class CreateChampionshipDetailGoalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('championship_detail_goals');
+        Schema::dropIfExists('championship_details_players_goals');
     }
 }

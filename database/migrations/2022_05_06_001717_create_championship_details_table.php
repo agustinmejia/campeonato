@@ -24,7 +24,7 @@ class CreateChampionshipDetailsTable extends Migration
             $table->foreignId('winner_id')->nullable()->constrained('teams');
             $table->string('win_type')->nullable()->default('normal');
             $table->string('status')->nullable()->default('pendiente');
-            $table->string('observations')->nullable();
+            $table->text('observations')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -9,6 +9,10 @@ use App\Models\Club;
 
 class TeamsController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
+    
     public function teams($id)
     {
         $club = Club::with('teams.category')->where('id', $id)->first();

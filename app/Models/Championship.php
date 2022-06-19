@@ -19,7 +19,15 @@ class Championship extends Model
         'status'
     ];
 
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
+
     public function teams(){
         return $this->hasMany(ChampionshipTeam::class);
+    }
+
+    public function details(){
+        return $this->hasMany(ChampionshipDetail::class);
     }
 }
