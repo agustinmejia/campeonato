@@ -14,6 +14,8 @@ class ChampionshipDetailsPlayer extends Model
         'championship_detail_id',
         'player_id',
         'number',
+        'type',
+        'playing',
         'status',
         'observations'
     ];

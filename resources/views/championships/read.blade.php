@@ -89,7 +89,7 @@
                                         <th>Local</th>
                                         <th>Visitante</th>
                                         <th>Fecha y hora</th>
-                                        <th>Resultado</th>
+                                        <th class="text-center">Resultado</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -97,24 +97,103 @@
                                     @php
                                         $cont = 1;
                                     @endphp
-                                    @foreach ($championship->details as $item)
+                                    @foreach ($championship->details as $detail)
                                         <tr>
                                             <td>{{ $cont }}</td>
-                                            <td>{{ $item->title }}</td>
-                                            <td><img src="{{ $item->local->club->logo ? asset('storage/'.$item->local->club->logo) : asset('images/default.jpg') }}" width="20px" alt=""> {{ $item->local->name }}</td>
-                                            <td><img src="{{ $item->visitor->club->logo ? asset('storage/'.$item->visitor->club->logo) : asset('images/default.jpg') }}" width="20px" alt=""> {{ $item->visitor->name }}</td>
-                                            <td>{{ date('d/m/Y H:i', strtotime($item->datetime)) }}</td>
-                                            <td></td>
-                                            <td class="no-sort no-click bread-actions">
-                                                @if (count($item->players) == 0)
-                                                <a href="#" data-item='@json($item)' data-toggle="modal" data-target="#enable-modal" title="Habilitar" class="btn btn-sm btn-warning btn-enable">
-                                                    <i class="voyager-check"></i> <span class="hidden-xs hidden-sm">Habilitar</span>
-                                                </a>    
+                                            <td>{{ $detail->title }}</td>
+                                            <td><img src="{{ $detail->local->club->logo ? asset('storage/'.$detail->local->club->logo) : asset('images/default.jpg') }}" width="20px" alt=""> {{ $detail->local->name }}</td>
+                                            <td><img src="{{ $detail->visitor->club->logo ? asset('storage/'.$detail->visitor->club->logo) : asset('images/default.jpg') }}" width="20px" alt=""> {{ $detail->visitor->name }}</td>
+                                            <td>{{ date('d/m/Y H:i', strtotime($detail->datetime)) }}</td>
+                                            <td class="text-center">
+                                                @if ($detail->status == 'finalizado')
+                                                    @if ($detail->win_type == 'normal')
+                                                        @php
+                                                            $local_goals = 0;
+                                                            $visitor_goals = 0;
+                                                            $local_goals_details = collect();
+                                                            $visitor_goals_details = collect();
+                                                            
+                                                            foreach($detail->players as $item){
+                                                                foreach ($item->player->teams as $team){
+                                                                    if ($team->team_id == $detail->local_id){
+                                                                        foreach ($item->goals as $goal) {
+                                                                            if($goal->type == 'normal' || $goal->type == 'penal'){
+                                                                                $local_goals++;
+                                                                                $local_goals_details->push([
+                                                                                    'player' => $item->player->first_name,
+                                                                                    'number' => $item->number,
+                                                                                    'type' => $goal->type,
+                                                                                    'min' => $goal->time
+                                                                                ]);
+                                                                            }elseif($goal->type == 'autogol'){
+                                                                                $visitor_goals++;
+                                                                                $visitor_goals_details->push([
+                                                                                    'player' => $item->player->first_name,
+                                                                                    'number' => $item->number,
+                                                                                    'type' => $goal->type,
+                                                                                    'min' => $goal->time
+                                                                                ]);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            foreach($detail->players as $item){
+                                                                foreach ($item->player->teams as $team){
+                                                                    if ($team->team_id == $detail->visitor_id){
+                                                                        foreach ($item->goals as $goal) {
+                                                                            if($goal->type == 'normal' || $goal->type == 'penal'){
+                                                                                $visitor_goals++;
+                                                                                $visitor_goals_details->push([
+                                                                                    'player' => $item->player->first_name,
+                                                                                    'number' => $item->number,
+                                                                                    'type' => $goal->type,
+                                                                                    'min' => $goal->time
+                                                                                ]);
+                                                                            }elseif($goal->type == 'autogol'){
+                                                                                $local_goals++;
+                                                                                $local_goals_details->push([
+                                                                                    'player' => $item->player->first_name,
+                                                                                    'number' => $item->number,
+                                                                                    'type' => $goal->type,
+                                                                                    'min' => $goal->time
+                                                                                ]);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        @endphp
+                                                        {{ $local_goals }} - {{ $visitor_goals }} <br>
+                                                    @else
+                                                        Walkover <br>
+                                                    @endif
+                                                    <b>
+                                                        @if ($detail->winner)
+                                                            Ganador {{ $detail->winner->name }}        
+                                                        @else
+                                                            Empate
+                                                        @endif
+                                                    </b>
+                                                @else
+                                                    por definirse
                                                 @endif
-                                                @if (count($item->players) > 0 && $item->status == 'pendiente')
-                                                <a href="{{ route('championships.game', ['id' => $item->id]) }}" title="Jugar" class="btn btn-sm btn-success">
-                                                    <i class="voyager-play"></i> <span class="hidden-xs hidden-sm">Jugar</span>
-                                                </a>
+                                            </td>
+                                            <td class="no-sort no-click bread-actions">
+                                                @if (count($detail->players) == 0)
+                                                    <a href="#" data-detail='@json($detail)' data-toggle="modal" data-target="#enable-modal" title="Habilitar" class="btn btn-sm btn-info btn-enable">
+                                                        <i class="voyager-check"></i> <span class="hidden-xs hidden-sm">Habilitar</span>
+                                                    </a>    
+                                                @endif
+                                                @if (count($detail->players) > 0 && $detail->status == 'pendiente')
+                                                    <a href="{{ route('championships.game', ['id' => $detail->id]) }}" title="Jugar" class="btn btn-sm btn-success">
+                                                        <i class="voyager-play"></i> <span class="hidden-xs hidden-sm">Jugar</span>
+                                                    </a>
+                                                @endif
+                                                @if ($detail->status == 'finalizado')
+                                                    <a href="{{ route('championships.game', ['id' => $detail->id]) }}" title="Ver detalles" class="btn btn-sm btn-warning">
+                                                        <i class="voyager-list"></i> <span class="hidden-xs hidden-sm">Ver</span>
+                                                    </a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -144,21 +223,21 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <table id="table-local" class="table table-bordered table-hover">
+                            <div class="col-md-6" style="padding-left: 20px; padding-right: 10px">
+                                <table id="table-local" class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th colspan="3" class="text-center">Local</th>
+                                            <th colspan="4" class="text-center" id="label-local">Local</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
-                                <table id="table-visitor" class="table table-bordered table-hover">
+                            <div class="col-md-6" style="padding-right: 20px; padding-left: 10px">
+                                <table id="table-visitor" class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th colspan="3" class="text-center">Visita</th>
+                                            <th colspan="4" class="text-center" id="label-visitor">Visita</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -180,32 +259,50 @@
     <script>
         $(document).ready(function () {
             $('.btn-enable').click(function(){
-                let item = $(this).data('item');
+                let detail = $(this).data('detail');
 
-                $('#form-enable input[name="championship_detail_id"]').val(item.id)
+                $('#form-enable input[name="championship_detail_id"]').val(detail.id)
+
+                $('#label-local').html(detail.local.name);
+                $('#label-visitor').html(detail.visitor.name);
 
                 $('#table-local tbody').empty();
-                item.local.team_players.map(function(value){
+                detail.local.team_players.map(function(value){
                     $('#table-local tbody').append(`
-                        <tr>
-                            <td><input type="checkbox" name="local_id[]" value="${value.player_id}" style=" transform: scale(1.5);" /></td>
-                            <td>${value.player.first_name} ${value.player.last_name}</td>
-                            <td><input type="number" name="local_number[]" class="form-control" style="width: 80px" placeholder="N&deg;" /></td>
+                        <tr id="tr-${value.player_id}">
+                            <td><input type="checkbox" name="local_id[]" value="${value.player_id}" onclick="changePlayer('local', ${value.player_id})" id="check-player-${value.player_id}" style=" transform: scale(1.2);" /></td>
+                            <td><b>${value.player.first_name} ${value.player.last_name}</b></td>
                         </tr>
                     `);
                 });
 
                 $('#table-visitor tbody').empty();
-                item.visitor.team_players.map(function(value){
+                detail.visitor.team_players.map(function(value){
                     $('#table-visitor tbody').append(`
-                        <tr>
-                            <td><input type="checkbox" name="visitor_id[]" value="${value.player_id}" style=" transform: scale(1.5);" /></td>
-                            <td>${value.player.first_name} ${value.player.last_name}</td>
-                            <td><input type="number" name="visitor_number[]" class="form-control" style="width: 80px" placeholder="N&deg;" /></td>
+                        <tr id="tr-${value.player_id}">
+                            <td><input type="checkbox" name="visitor_id[]" value="${value.player_id}" onclick="changePlayer('visitor', ${value.player_id})" id="check-player-${value.player_id}" style=" transform: scale(1.2);" /></td>
+                            <td><b>${value.player.first_name} ${value.player.last_name}</b></td>
                         </tr>
                     `);
                 });
             });
         });
+
+        function changePlayer(player, id){
+                let check = $(`#check-player-${id}`)[0].checked;
+                if(check){
+                    $(`#tr-${id}`).append(`
+                        <td class="td-info-player-${id}">
+                            <select name="${player}_type[]" class="form-control" style="width: 110px">
+                                <option value="titular">Titular</option>
+                                <option value="suplente">Suplente</option>
+                            </select>
+                        </td>
+                        <td class="td-info-player-${id}"><input type="number" name="${player}_number[]" min="1" max="99" class="form-control" style="width: 80px" placeholder="N&deg;" /></td>
+                    `);
+                }else{
+                    $(`.td-info-player-${id}`).remove();
+                }
+            }
     </script>
 @stop

@@ -54,6 +54,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('championships/game/{id}', [ChampionshipsController::class, 'game'])->name('championships.game');
     Route::post('championships/game/{id}/goal', [ChampionshipsController::class, 'game_goal'])->name('championships.game.goal');
     Route::post('championships/game/{id}/card', [ChampionshipsController::class, 'game_card'])->name('championships.game.card');
+    Route::post('championships/game/{id}/change', [ChampionshipsController::class, 'game_change'])->name('championships.game.change');
     Route::post('championships/game/{id}/finish', [ChampionshipsController::class, 'game_finish'])->name('championships.game.finish');
 
     Route::get('reports/players', [ReportsController::class, 'players_index'])->name('reports.players.index');

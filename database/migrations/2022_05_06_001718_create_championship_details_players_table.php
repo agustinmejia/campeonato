@@ -18,6 +18,8 @@ class CreateChampionshipDetailsPlayersTable extends Migration
             $table->foreignId('championship_detail_id')->nullable()->constrained('championship_details');
             $table->foreignId('player_id')->nullable()->constrained('players');
             $table->smallInteger('number')->nullable();
+            $table->string('type')->nullable();
+            $table->smallInteger('playing')->nullable();
             $table->string('status')->nullable()->default('activo');
             $table->text('observations')->nullable();
             $table->timestamps();

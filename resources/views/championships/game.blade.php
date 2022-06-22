@@ -120,26 +120,34 @@
                                             </thead>
                                             <tbody>
                                                 @php
-                                                    $cont = 1;
+                                                    $cont = 0;
+                                                    $local_enable_change = collect();
                                                 @endphp
-                                                @foreach($game->players as $item)
+                                                @foreach($game->players->sortBy('number')->sortByDesc('playing') as $item)
                                                     @foreach ($item->player->teams as $team)
                                                         @if ($team->team_id == $game->local_id)
+                                                            @php
+                                                                $cont++;
+                                                                if($item->type == 'suplente' && !$item->playing && $item->status == 'activo'){
+                                                                    $local_enable_change->push($item->player);
+                                                                }
+                                                            @endphp
                                                             <tr>
                                                                 <td><h5>{{ $cont }}</h5></td>
                                                                 <td>
                                                                     <h5>
-                                                                        {{ $item->player->first_name }} {{ $item->player->last_name }} 
                                                                         @php
-                                                                            $player_enable = true;
+                                                                            $image = asset('images/default.jpg');
+                                                                            if($item->player->image){
+                                                                                $image = asset('storage/'.str_replace('.', '.', $item->player->image));
+                                                                            }
                                                                         @endphp
+                                                                        <img class="img-avatar" src="{{ $image }}" alt="">
+                                                                        {{ $item->player->first_name }} {{ $item->player->last_name }} 
                                                                         @if($item->number) ({{ $item->number }}) @endif
                                                                             @if ($item->cards->count() > 0)
                                                                                 @if ($item->cards->where('type', 'red')->count() > 0)
                                                                                     <img src="{{ asset('images/red-card.png') }}" width="10px" alt="">
-                                                                                    @php
-                                                                                        $player_enable = false;
-                                                                                    @endphp
                                                                                 @else
                                                                                     <img src="{{ asset('images/yellow-card.png') }}" width="10px" alt="">  
                                                                                 @endif
@@ -147,17 +155,17 @@
                                                                         @endif
                                                                     </h5>
                                                                 </td>
-                                                                <td style="width: 120px;" class="td-actions text-right">
-                                                                    @if ($player_enable)
-                                                                        <a href="#" class="btn-goal" data-item='@json($item)' data-toggle="modal" data-target="#goal-modal"><img src="{{ asset('images/ball.png') }}" width="25px" alt=""></a>
-                                                                        <a href="#" class="btn-card" data-item='@json($item)' data-type="yellow" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/yellow-card.png') }}" width="25px" alt=""></a>
-                                                                        <a href="#" class="btn-card" data-item='@json($item)' data-type="red" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/red-card.png') }}" width="25px" alt=""></a>
+                                                                <td style="width: 140px;" class="td-actions text-right">
+                                                                    @if ($game->status != 'finalizado')
+                                                                        @if ($item->playing)
+                                                                            <a href="#" class="btn-change" data-item='@json($item)' data-type="local" data-toggle="modal" data-target="#change-modal"><img src="{{ asset('images/change.png') }}" width="25px" alt=""></a>    
+                                                                            <a href="#" class="btn-goal" data-item='@json($item)' data-toggle="modal" data-target="#goal-modal"><img src="{{ asset('images/ball.png') }}" width="25px" alt=""></a>
+                                                                            <a href="#" class="btn-card" data-item='@json($item)' data-type="yellow" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/yellow-card.png') }}" width="25px" alt=""></a>
+                                                                            <a href="#" class="btn-card" data-item='@json($item)' data-type="red" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/red-card.png') }}" width="25px" alt=""></a>
+                                                                        @endif
                                                                     @endif
                                                                 </td>
                                                             </tr>
-                                                            @php
-                                                                $cont++;
-                                                            @endphp
                                                         @endif
                                                     @endforeach
                                                 @endforeach
@@ -179,25 +187,33 @@
                                             <tbody>
                                                 @php
                                                     $cont = 1;
+                                                    $visitor_enable_change = collect();
                                                 @endphp
-                                                @foreach($game->players as $item)
+                                                @foreach($game->players->sortBy('number')->sortByDesc('playing') as $item)
                                                 @foreach ($item->player->teams as $team)
                                                     @if ($team->team_id == $game->visitor_id)
+                                                        @php
+                                                            $cont++;
+                                                            if($item->type == 'suplente' && !$item->playing && $item->status == 'activo'){
+                                                                $visitor_enable_change->push($item->player);
+                                                            }
+                                                        @endphp
                                                         <tr>
                                                             <td><h5>{{ $cont }}</h5></td>
                                                             <td>
                                                                 <h5>
-                                                                    {{ $item->player->first_name }} {{ $item->player->last_name }}
                                                                     @php
-                                                                        $player_enable = true;
+                                                                        $image = asset('images/default.jpg');
+                                                                        if($item->player->image){
+                                                                            $image = asset('storage/'.str_replace('.', '.', $item->player->image));
+                                                                        }
                                                                     @endphp
+                                                                    <img class="img-avatar" src="{{ $image }}" alt="">
+                                                                    {{ $item->player->first_name }} {{ $item->player->last_name }}
                                                                     @if($item->number) ({{ $item->number }}) @endif
                                                                         @if ($item->cards->count() > 0)
                                                                             @if ($item->cards->where('type', 'red')->count() > 0)
                                                                                 <img src="{{ asset('images/red-card.png') }}" width="10px" alt="">
-                                                                                @php
-                                                                                    $player_enable = false;
-                                                                                @endphp
                                                                             @else
                                                                                 <img src="{{ asset('images/yellow-card.png') }}" width="10px" alt="">  
                                                                             @endif
@@ -205,17 +221,17 @@
                                                                     @endif
                                                                 </h5>
                                                             </td>
-                                                            <td style="width: 120px;" class="td-actions text-right">
-                                                                @if ($player_enable)
-                                                                    <a href="#" class="btn-goal" data-item='@json($item)' data-toggle="modal" data-target="#goal-modal"><img src="{{ asset('images/ball.png') }}" width="25px" alt=""></a>
-                                                                    <a href="#" class="btn-card" data-item='@json($item)' data-type="yellow" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/yellow-card.png') }}" width="25px" alt=""></a>
-                                                                    <a href="#" class="btn-card" data-item='@json($item)' data-type="red" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/red-card.png') }}" width="25px" alt=""></a>
+                                                            <td style="width: 140px;" class="td-actions text-right">
+                                                                @if ($game->status != 'finalizado')
+                                                                    @if ($item->playing)
+                                                                        <a href="#" class="btn-change" data-item='@json($item)' data-type="visitor" data-toggle="modal" data-target="#change-modal"><img src="{{ asset('images/change.png') }}" width="25px" alt=""></a>    
+                                                                        <a href="#" class="btn-goal" data-item='@json($item)' data-toggle="modal" data-target="#goal-modal"><img src="{{ asset('images/ball.png') }}" width="25px" alt=""></a>
+                                                                        <a href="#" class="btn-card" data-item='@json($item)' data-type="yellow" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/yellow-card.png') }}" width="25px" alt=""></a>
+                                                                        <a href="#" class="btn-card" data-item='@json($item)' data-type="red" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/red-card.png') }}" width="25px" alt=""></a>
+                                                                    @endif
                                                                 @endif
                                                             </td>
                                                         </tr>
-                                                        @php
-                                                            $cont++;
-                                                        @endphp
                                                     @endif
                                                 @endforeach
                                             @endforeach
@@ -311,8 +327,34 @@
         </div>
     </form>
 
+    {{-- Card modal --}}
+    <form id="form-change" action="{{ route('championships.game.change', ['id' => $game->id]) }}" method="post">
+        @csrf
+        <input type="hidden" name="championship_details_player_id">
+        <div class="modal fade" tabindex="-1" id="change-modal" role="dialog">
+            <div class="modal-dialog modal-primary">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="voyager-person"></i> Registrar cambio de jugador</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="player_id">Jugador entrante</label>
+                            <select name="player_id" class="form-control" required></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer text-right">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
     {{-- Finish modal --}}
-    <form id="form-card" action="{{ route('championships.game.finish', ['id' => $game->id]) }}" method="post">
+    <form id="form-finish" action="{{ route('championships.game.finish', ['id' => $game->id]) }}" method="post">
         @csrf
         @php
             $winner_id = null;
@@ -337,6 +379,13 @@
                                 <td class="text-center"><label class="radio-inline"><input type="radio" name="win_type" value="walkover">Walkover</label></td>
                             </tr>
                         </table>
+                        <div class="form-group" id="div-winner_id_alt" style="display: none">
+                            <label for="winner_id_alt">Equipo ganador</label>
+                            <select name="winner_id_alt" class="form-control">
+                                <option value="{{ $game->local_id }}">{{ $game->local->name }}</option>
+                                <option value="{{ $game->visitor_id }}">{{ $game->visitor->name }}</option>
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label for="observations">Observaciones</label>
                             <textarea name="observations" class="form-control" rows="3"></textarea>
@@ -361,6 +410,12 @@
             filter: grayscale(0%);;
             /* width: 28px */
         }
+        .img-avatar{
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            margin-right: 5px
+        }
     </style>
 @endsection
 
@@ -369,7 +424,7 @@
 
         // Si el partio está finalizado se debe resetear el reloj
         @if($game->status == 'finalizado')
-        localStorage.setItem('time', null)
+        localStorage.setItem('time', '')
         @endif
 
         var h1 = document.getElementById('timer');
@@ -435,7 +490,9 @@
 
     <script>
         $(document).ready(function () {
-            
+            let local_enable_change = @json($local_enable_change);
+            let visitor_enable_change = @json($visitor_enable_change);
+
             // Click en gol
             $('.btn-goal').click(function(){
                 let item = $(this).data('item');
@@ -449,6 +506,25 @@
                 $('#form-card input[name="championship_details_player_id"]').val(item.id);
                 $('#form-card input[name="time"]').val(min);
                 $('#form-card select[name="type"]').val(type);
+            });
+
+            $('.btn-change').click(function(){
+                let item = $(this).data('item');
+                let type = $(this).data('type');
+                $('#form-change input[name="championship_details_player_id"]').val(item.id);
+
+                $('#form-change select[name=player_id]').html('<option value="">--Seleccione jugador--</option>');
+                let players = type == 'local' ? local_enable_change : visitor_enable_change;
+                players.map(item => {
+                    $('#form-change select[name=player_id]').append(`
+                        <option value="${item.id}">${item.first_name} ${item.last_name}</option>
+                    `);
+                });
+            });
+
+            $('#form-finish input[name="win_type"]').click(function(){
+                let value = $("#form-finish input[name='win_type']:checked").val();
+                value == 'normal' ? $('#div-winner_id_alt').fadeOut() : $('#div-winner_id_alt').fadeIn();
             });
         });
     </script>

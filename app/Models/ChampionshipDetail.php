@@ -34,4 +34,8 @@ class ChampionshipDetail extends Model
     public function players(){
         return $this->hasMany(ChampionshipDetailsPlayer::class);
     }
+
+    public function winner(){
+        return $this->belongsTo(Team::class, 'winner_id');
+    }
 }

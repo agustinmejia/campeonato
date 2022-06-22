@@ -165,24 +165,37 @@ class ChampionshipsController extends Controller
     // =================================================
 
     public function details_enable($id, Request $request){
+        // dd($request->all());
+        DB::beginTransaction();
         try {
-            for ($i=0; $i < count($request->local_id); $i++) { 
-                ChampionshipDetailsPlayer::create([
-                    'championship_detail_id' => $request->championship_detail_id,
-                    'player_id' => $request->local_id[$i],
-                    'number' => $request->local_number[$i],
-                ]);
+            if($request->local_id){
+                for ($i=0; $i < count($request->local_id); $i++) { 
+                    ChampionshipDetailsPlayer::create([
+                        'championship_detail_id' => $request->championship_detail_id,
+                        'player_id' => $request->local_id[$i],
+                        'type' => $request->local_type[$i],
+                        'playing' => $request->local_type[$i] == 'titular' ? 1 : 0,
+                        'number' => $request->local_number[$i],
+                    ]);
+                }
             }
 
-            for ($i=0; $i < count($request->visitor_id); $i++) { 
-                ChampionshipDetailsPlayer::create([
-                    'championship_detail_id' => $request->championship_detail_id,
-                    'player_id' => $request->visitor_id[$i],
-                    'number' => $request->visitor_number[$i],
-                ]);
+            if($request->visitor_id){
+                for ($i=0; $i < count($request->visitor_id); $i++) { 
+                    ChampionshipDetailsPlayer::create([
+                        'championship_detail_id' => $request->championship_detail_id,
+                        'player_id' => $request->visitor_id[$i],
+                        'type' => $request->visitor_type[$i],
+                        'playing' => $request->visitor_type[$i] == 'titular' ? 1 : 0,
+                        'number' => $request->visitor_number[$i],
+                    ]);
+                }
             }
+
+            DB::commit();
             return redirect()->route('championships.show', ['championship' => $id])->with(['message' => 'Encuantro habilitado exitosamente', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
+            DB::rollback();
             // dd($th);
             return redirect()->route('championships.show', ['championship' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
         }
@@ -234,8 +247,36 @@ class ChampionshipsController extends Controller
                 ]);
             }
 
+            // Si la tarjeta es roja o acumula 2 amaillas
+            if($card || $request->type == 'red'){
+                $player = ChampionshipDetailsPlayer::find($request->championship_details_player_id);
+                $player->playing = 0;
+                $player->status = 'inactivo';
+                $player->save();
+            }
+
 
             return redirect()->route('championships.game', ['id' => $id])->with(['message' => 'Tarjeta registrada', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->route('championships.game', ['id' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
+        }
+    }
+
+    public function game_change($id, Request $request){
+        try {
+            $player_in = ChampionshipDetailsPlayer::where('championship_detail_id', $id)
+                        ->where('player_id', $request->player_id)
+                        ->where('deleted_at', null)->first();
+            $player_in->playing = 1;
+            $player_in->save();
+
+            $player_out = ChampionshipDetailsPlayer::find($request->championship_details_player_id);
+            $player_out->playing = 0;
+            $player_out->status = 'inactivo';
+            $player_out->save();
+
+            return redirect()->route('championships.game', ['id' => $id])->with(['message' => 'Cambio registrado', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->route('championships.game', ['id' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
@@ -245,7 +286,7 @@ class ChampionshipsController extends Controller
     public function game_finish($id, Request $request){
         try {
             ChampionshipDetail::where('id', $id)->update([
-                'winner_id' => $request->winner_id,
+                'winner_id' => $request->win_type == 'normal' ? $request->winner_id : $request->winner_id_alt,
                 'win_type' => $request->win_type,
                 'status' => 'finalizado',
                 'observations' => $request->observations
