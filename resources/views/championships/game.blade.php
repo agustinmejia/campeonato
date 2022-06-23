@@ -89,7 +89,8 @@
                                 </div>
                             @else
                                 <h1><span>{{ $local_goals }} - {{ $visitor_goals }}</span></h1>
-                                <label class="label label-danger">{{ Str::ucfirst($game->status) }}</label>
+                                <label class="label label-danger">{{ Str::ucfirst($game->status) }}</label> <br>
+                                <a href="{{ route('championships.show', ['championship' => $game->championship_id]) }}" class="btn btn-warning">Volver a la lista <i class="voyager-list"></i></a>
                             @endif
                         </div>
                         <div class="col-xs-4 col-sm-4">

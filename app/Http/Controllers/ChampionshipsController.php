@@ -41,7 +41,7 @@ class ChampionshipsController extends Controller
                         ->OrWhereRaw($search ? "year like '%$search%'" : 1)
                         ->OrWhereRaw($search ? "status like '%$search%'" : 1);
                     }
-                })->where('deleted_at', NULL)->paginate($paginate);
+                })->where('deleted_at', NULL)->orderBy('id', 'DESC')->paginate($paginate);
         // dd($data);
         return view('championships.list', compact('data'));
     }
@@ -113,7 +113,7 @@ class ChampionshipsController extends Controller
      */
     public function show($id)
     {
-        $championship = Championship::with(['details.local.team_players.player', 'details.visitor.team_players.player'])->find($id);
+        $championship = Championship::with(['teams.team', 'details.local.team_players.player', 'details.visitor.team_players.player'])->find($id);
         return view('championships.read', compact('championship'));
     }
 

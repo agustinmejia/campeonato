@@ -206,6 +206,76 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="panel panel-bordered" style="padding-bottom:5px;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="dataTable" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="7"><h4 class="text-center">TABLA DE POSICIONES</h4></th>
+                                    </tr>
+                                    <tr>
+                                        <th>Pos.</th>
+                                        <th>Equipo</th>
+                                        <th>PJ</th>
+                                        <th>PG</th>
+                                        <th>PE</th>
+                                        <th>PP</th>
+                                        <th>Pts.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $cont = 0;
+                                    @endphp
+                                    @foreach ($championship->teams as $item)
+                                        @php
+                                            $pg = 0;
+                                            $pe = 0;
+                                            $pp = 0;
+                                            foreach($championship->details as $detail){
+                                                if($detail->status == 'finalizado'){
+                                                    if(($detail->local_id == $item->team_id || $detail->visitor_id == $item->team_id) && $detail->winner_id == $item->team_id){
+                                                        $pg++;
+                                                    }
+                                                    if(($detail->local_id == $item->team_id || $detail->visitor_id == $item->team_id) && $detail->winner_id == null){
+                                                        $pe++;
+                                                    }
+
+                                                    if(($detail->local_id == $item->team_id || $detail->visitor_id == $item->team_id) && $detail->winner_id != null && $detail->winner_id != $item->team_id){
+                                                        $pp++;
+                                                    }
+                                                }
+                                            }
+                                            $championship->teams[$cont]->pj = $pg + $pe + $pp;
+                                            $championship->teams[$cont]->pg = $pg;
+                                            $championship->teams[$cont]->pe = $pe;
+                                            $championship->teams[$cont]->pp = $pp;
+                                            $championship->teams[$cont]->points = ($pg *3) + ($pe *1);
+                                            $cont++;
+                                        @endphp
+                                    @endforeach
+
+                                    @foreach ($championship->teams->sortByDesc('points') as $item)
+                                        <tr>
+                                            <td>{{ $cont }}</td>
+                                            <td><img src="{{ $item->team->club->logo ? asset('storage/'.$item->team->club->logo) : asset('images/default.jpg') }}" width="20px" alt=""> {{ $item->team->name }}</td>
+                                            <td>{{ $item->pj }}</td>
+                                            <td>{{ $item->pg }}</td>
+                                            <td>{{ $item->pe }}</td>
+                                            <td>{{ $item->pp }}</td>
+                                            <td>{{ $item->points }}</td>
+                                        </tr>
+                                        @php
+                                            $cont++;
+                                        @endphp
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
