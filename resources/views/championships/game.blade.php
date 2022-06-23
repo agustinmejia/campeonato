@@ -187,7 +187,7 @@
                                             </thead>
                                             <tbody>
                                                 @php
-                                                    $cont = 1;
+                                                    $cont = 0;
                                                     $visitor_enable_change = collect();
                                                 @endphp
                                                 @foreach($game->players->sortBy('number')->sortByDesc('playing') as $item)

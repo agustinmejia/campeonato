@@ -170,9 +170,9 @@
                                                     @endif
                                                     <b>
                                                         @if ($detail->winner)
-                                                            Ganador {{ $detail->winner->name }}        
+                                                            <label class="label label-success">{{ $detail->winner->name }}    </label>    
                                                         @else
-                                                            Empate
+                                                            <label class="label label-info">Empate</label>
                                                         @endif
                                                     </b>
                                                 @else
@@ -197,9 +197,6 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                        @php
-                                            $cont++;
-                                        @endphp
                                     @endforeach
                                 </tbody>
                             </table>
@@ -216,7 +213,7 @@
                                         <th colspan="7"><h4 class="text-center">TABLA DE POSICIONES</h4></th>
                                     </tr>
                                     <tr>
-                                        <th>Pos.</th>
+                                        <th>N&deg;</th>
                                         <th>Equipo</th>
                                         <th>PJ</th>
                                         <th>PG</th>
@@ -257,6 +254,9 @@
                                         @endphp
                                     @endforeach
 
+                                    @php
+                                        $cont = 1;
+                                    @endphp
                                     @foreach ($championship->teams->sortByDesc('points') as $item)
                                         <tr>
                                             <td>{{ $cont }}</td>
@@ -297,7 +297,7 @@
                                 <table id="table-local" class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th colspan="4" class="text-center" id="label-local">Local</th>
+                                            <th colspan="3" class="text-center" id="label-local">Local</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -307,7 +307,7 @@
                                 <table id="table-visitor" class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th colspan="4" class="text-center" id="label-visitor">Visita</th>
+                                            <th colspan="3" class="text-center" id="label-visitor">Visita</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -325,6 +325,14 @@
     </form>
 @stop
 
+@section('css')
+    <style>
+        .check-player{
+            transform: scale(1.2)
+        }
+    </style>
+@endsection
+
 @section('javascript')
     <script>
         $(document).ready(function () {
@@ -340,7 +348,7 @@
                 detail.local.team_players.map(function(value){
                     $('#table-local tbody').append(`
                         <tr id="tr-${value.player_id}">
-                            <td><input type="checkbox" name="local_id[]" value="${value.player_id}" onclick="changePlayer('local', ${value.player_id})" id="check-player-${value.player_id}" style=" transform: scale(1.2);" /></td>
+                            <td><input type="checkbox" name="player_id[]" value="${value.player_id}" onclick="changePlayer(${value.player_id})" id="check-player-${value.player_id}" class="check-player" /></td>
                             <td><b>${value.player.first_name} ${value.player.last_name}</b></td>
                         </tr>
                     `);
@@ -350,7 +358,7 @@
                 detail.visitor.team_players.map(function(value){
                     $('#table-visitor tbody').append(`
                         <tr id="tr-${value.player_id}">
-                            <td><input type="checkbox" name="visitor_id[]" value="${value.player_id}" onclick="changePlayer('visitor', ${value.player_id})" id="check-player-${value.player_id}" style=" transform: scale(1.2);" /></td>
+                            <td><input type="checkbox" name="player_id[]" value="${value.player_id}" onclick="changePlayer(${value.player_id})" id="check-player-${value.player_id}" class="check-player" /></td>
                             <td><b>${value.player.first_name} ${value.player.last_name}</b></td>
                         </tr>
                     `);
@@ -358,21 +366,15 @@
             });
         });
 
-        function changePlayer(player, id){
-                let check = $(`#check-player-${id}`)[0].checked;
-                if(check){
-                    $(`#tr-${id}`).append(`
-                        <td class="td-info-player-${id}">
-                            <select name="${player}_type[]" class="form-control" style="width: 110px">
-                                <option value="titular">Titular</option>
-                                <option value="suplente">Suplente</option>
-                            </select>
-                        </td>
-                        <td class="td-info-player-${id}"><input type="number" name="${player}_number[]" min="1" max="99" class="form-control" style="width: 80px" placeholder="N&deg;" /></td>
-                    `);
-                }else{
-                    $(`.td-info-player-${id}`).remove();
-                }
+        function changePlayer(id){
+            let check = $(`#check-player-${id}`)[0].checked;
+            if(check){
+                $(`#tr-${id}`).append(`
+                    <td class="td-info-player-${id}"><input type="number" name="number[]" min="1" max="99" class="form-control" style="width: 80px" placeholder="N&deg;" /></td>
+                `);
+            }else{
+                $(`.td-info-player-${id}`).remove();
             }
+        }
     </script>
 @stop

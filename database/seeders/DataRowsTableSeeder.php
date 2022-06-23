@@ -928,7 +928,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '{"display":{"width":6},"validation":{"rule":"required|max:191"}}',
+                'details' => '{"display":{"width":6},"validation":{"rule":"required|max:191|unique:players.ci"}}',
                 'order' => 4,
             ),
             57 => 

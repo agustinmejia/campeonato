@@ -34,8 +34,8 @@ class DataTypesTableSeeder extends Seeder
                 'generate_permissions' => 1,
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"desc","default_search_key":null,"scope":null}',
-                'created_at' => '2021-06-02 17:55:30',
-                'updated_at' => '2022-06-08 19:31:03',
+                'created_at' => '2021-06-02 13:55:30',
+                'updated_at' => '2022-06-08 15:31:03',
             ),
             1 => 
             array (
@@ -52,8 +52,8 @@ class DataTypesTableSeeder extends Seeder
                 'generate_permissions' => 1,
                 'server_side' => 0,
                 'details' => NULL,
-                'created_at' => '2021-06-02 17:55:30',
-                'updated_at' => '2021-06-02 17:55:30',
+                'created_at' => '2021-06-02 13:55:30',
+                'updated_at' => '2021-06-02 13:55:30',
             ),
             2 => 
             array (
@@ -70,8 +70,8 @@ class DataTypesTableSeeder extends Seeder
                 'generate_permissions' => 1,
                 'server_side' => 0,
                 'details' => NULL,
-                'created_at' => '2021-06-02 17:55:31',
-                'updated_at' => '2021-06-02 17:55:31',
+                'created_at' => '2021-06-02 13:55:31',
+                'updated_at' => '2021-06-02 13:55:31',
             ),
             3 => 
             array (
@@ -88,8 +88,8 @@ class DataTypesTableSeeder extends Seeder
                 'generate_permissions' => 1,
                 'server_side' => 0,
                 'details' => '{"order_column":"name","order_display_column":"name","order_direction":"asc","default_search_key":null,"scope":null}',
-                'created_at' => '2022-03-28 17:40:20',
-                'updated_at' => '2022-03-29 20:11:14',
+                'created_at' => '2022-03-28 13:40:20',
+                'updated_at' => '2022-03-29 16:11:14',
             ),
             4 => 
             array (
@@ -106,8 +106,8 @@ class DataTypesTableSeeder extends Seeder
                 'generate_permissions' => 1,
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
-                'created_at' => '2022-03-28 17:49:49',
-                'updated_at' => '2022-03-29 18:36:23',
+                'created_at' => '2022-03-28 13:49:49',
+                'updated_at' => '2022-03-29 14:36:23',
             ),
             5 => 
             array (
@@ -124,8 +124,8 @@ class DataTypesTableSeeder extends Seeder
                 'generate_permissions' => 1,
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
-                'created_at' => '2022-03-28 17:52:15',
-                'updated_at' => '2022-03-29 21:20:59',
+                'created_at' => '2022-03-28 13:52:15',
+                'updated_at' => '2022-03-29 17:20:59',
             ),
             6 => 
             array (
@@ -142,8 +142,8 @@ class DataTypesTableSeeder extends Seeder
                 'generate_permissions' => 1,
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
-                'created_at' => '2022-03-28 18:02:35',
-                'updated_at' => '2022-03-28 18:09:14',
+                'created_at' => '2022-03-28 14:02:35',
+                'updated_at' => '2022-03-28 14:09:14',
             ),
             7 => 
             array (
@@ -160,8 +160,8 @@ class DataTypesTableSeeder extends Seeder
                 'generate_permissions' => 1,
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
-                'created_at' => '2022-03-28 18:21:21',
-                'updated_at' => '2022-04-27 00:06:39',
+                'created_at' => '2022-03-28 14:21:21',
+                'updated_at' => '2022-06-23 17:18:04',
             ),
             8 => 
             array (
@@ -178,8 +178,8 @@ class DataTypesTableSeeder extends Seeder
                 'generate_permissions' => 1,
                 'server_side' => 0,
                 'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
-                'created_at' => '2022-04-27 00:07:49',
-                'updated_at' => '2022-04-27 01:01:21',
+                'created_at' => '2022-04-26 20:07:49',
+                'updated_at' => '2022-04-26 21:01:21',
             ),
             9 => 
             array (
@@ -196,8 +196,8 @@ class DataTypesTableSeeder extends Seeder
                 'generate_permissions' => 1,
                 'server_side' => 0,
                 'details' => '{"order_column":"table_name","order_display_column":"table_name","order_direction":"asc","default_search_key":null,"scope":null}',
-                'created_at' => '2022-06-10 00:28:08',
-                'updated_at' => '2022-06-10 00:29:57',
+                'created_at' => '2022-06-09 20:28:08',
+                'updated_at' => '2022-06-09 20:29:57',
             ),
         ));
         

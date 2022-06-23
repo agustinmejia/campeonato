@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 // Models
+use App\Models\Player;
+use App\Models\TeamPlayer;
 use App\Models\Championship;
 use App\Models\ChampionshipTeam;
 use App\Models\ChampionshipDetail;
@@ -168,26 +170,21 @@ class ChampionshipsController extends Controller
         // dd($request->all());
         DB::beginTransaction();
         try {
-            if($request->local_id){
-                for ($i=0; $i < count($request->local_id); $i++) { 
+            if($request->player_id){
+                $details = ChampionshipDetail::find($request->championship_detail_id);
+                $team_players = TeamPlayer::whereHas('player', function($q){
+                                $q->where('status', 'activo')->where('deleted_at', NULL);
+                            })
+                            ->whereRaw('(team_id = '.$details->local_id.' or team_id = '.$details->visitor_id.')')
+                            ->where('deleted_at', NULL)->get();
+                foreach ($team_players as $item) {
+                    $index = array_search($item->player_id, $request->player_id);
                     ChampionshipDetailsPlayer::create([
                         'championship_detail_id' => $request->championship_detail_id,
-                        'player_id' => $request->local_id[$i],
-                        'type' => $request->local_type[$i],
-                        'playing' => $request->local_type[$i] == 'titular' ? 1 : 0,
-                        'number' => $request->local_number[$i],
-                    ]);
-                }
-            }
-
-            if($request->visitor_id){
-                for ($i=0; $i < count($request->visitor_id); $i++) { 
-                    ChampionshipDetailsPlayer::create([
-                        'championship_detail_id' => $request->championship_detail_id,
-                        'player_id' => $request->visitor_id[$i],
-                        'type' => $request->visitor_type[$i],
-                        'playing' => $request->visitor_type[$i] == 'titular' ? 1 : 0,
-                        'number' => $request->visitor_number[$i],
+                        'player_id' => $item->player_id,
+                        'type' => $index !== false ? 'titular' : 'suplente',
+                        'playing' => $index !== false ? 1 : 0,
+                        'number' => $index !== false ? $request->number[$index] : null,
                     ]);
                 }
             }
