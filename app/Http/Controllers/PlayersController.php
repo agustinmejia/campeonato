@@ -25,7 +25,7 @@ class PlayersController extends Controller
         $players = Player::where('deleted_at', NULL)
                     ->with(['teams' => function($q){
                         $q->where('status', 'activo')->where('deleted_at', NULL);
-                    }, 'teams.team'])
+                    }, 'teams.team', 'documents'])
                     ->whereHas('teams.team', function($q){
                         $q->whereRaw(Auth::user()->club_id ? 'club_id = '.Auth::user()->club_id : 1);
                     })
@@ -201,6 +201,10 @@ class PlayersController extends Controller
             dd($th);
             return redirect()->route('players.transfers', ['id' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
         }
+    }
+
+    function documents_store($id){
+
     }
 
     // ===============================================

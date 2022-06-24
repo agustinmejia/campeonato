@@ -70,9 +70,9 @@
                                                                 <li><a href="{{ route('players.print', ['id' => $item->id, 'type' => 'certificado']) }}" target="_blank">Imprimir kardex</a></li>
                                                                 <li class="divider"></li>
                                                                 <li><a href="{{ route('players.transfers', ['id' => $item->id]) }}">Traspasos</a></li>
-                                                                @if ($item->origin == 'beni')
-                                                                <li><a href="#">Datos de los padres</a></li>
-                                                                @endif
+                                                                {{-- @if ($item->origin == 'beni') --}}
+                                                                <li><a href="#" class="btn-documents" data-item='@json($item)' data-toggle="modal" data-target="#documents_modal">Datos de los padres</a></li>
+                                                                {{-- @endif --}}
                                                             </ul>
                                                         </div>
                                                     @endif
@@ -102,6 +102,55 @@
                 </div>
             </div>
         </div>
+
+        {{-- Documents modal --}}
+        <form id="form-documents" action="" id="delete_form" method="POST">
+            <div class="modal fade" tabindex="-1" id="documents_modal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><i class="voyager-person"></i> Documentos</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="type">Parentesco</label>
+                                <select name="type" class="form-control" required>
+                                    <option value="">Seleccione el parentesco</option>
+                                    <option value="padre">Padre</option>
+                                    <option value="madre">Madre</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="full_name">Nombre completo</label>
+                                <input type="text" name="full_name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ci">CI</label>
+                                <input type="text" name="ci" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="type">Procedencia</label>
+                                <select name="type" class="form-control" required>
+                                    <option value="">Seleccione la procedencia</option>
+                                    @foreach (['chuquisaca', 'la paz', 'oruro', 'pando', 'potosí', 'santa cruz', 'tarija' ] as $item)
+                                    <option value="{{ $item }}">{{ Str::ucfirst($item) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="file">Documento</label>
+                                <input type="file" name="file" class="form-control" accept="application/pdf" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer text-right">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <input type="submit" class="btn btn-primary" value="Guardar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     @stop
 
     @section('css')
@@ -112,6 +161,11 @@
         <script>
             $(document).ready(function() {
                 var table = $('#dataTable').DataTable({"order":[],"language":{"sEmptyTable":"No hay datos disponibles en la tabla","sInfo":"Mostrando _START_ a _END_ de _TOTAL_ entradas","sInfoEmpty":"Mostrando 0 a 0 de 0 entradas","sInfoFiltered":"(Filtrada de _MAX_ entradas totales)","sInfoPostFix":"","sInfoThousands":",","sLengthMenu":"Mostrar _MENU_ entradas","sLoadingRecords":"Cargando...","sProcessing":"Procesando...","sSearch":"Buscar:","sZeroRecords":"No se encontraron registros coincidentes","oPaginate":{"sFirst":"Primero","sLast":"\u00daltimo","sNext":"Siguiente","sPrevious":"Anterior"},"oAria":{"sSortAscending":": Activar para ordenar la columna ascendente","sSortDescending":": Activar para ordenar la columna descendente"}},"columnDefs":[{"targets":"dt-not-orderable","searchable":false,"orderable":false}]});
+
+                $('.btn-documents').click(function(){
+                    let item = $(this).data('item');
+                    console.log(item)
+                });
             });
 
             function deleteItem(id){

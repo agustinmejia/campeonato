@@ -29,4 +29,8 @@ class Player extends Model
     public function transfers(){
         return $this->hasMany(PlayersTransfer::class);
     }
+
+    public function documents(){
+        return $this->hasMany(PlayerDocument::class);
+    }
 }
