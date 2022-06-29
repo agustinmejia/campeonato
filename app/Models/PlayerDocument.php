@@ -17,7 +17,7 @@ class PlayerDocument extends Model
         'full_name',
         'ci',
         'origin',
-        'image',
+        'file',
         'observations',
     ];
 }

@@ -14,6 +14,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use App\Models\Player;
 use App\Models\TeamPlayer;
 use App\Models\PlayersTransfer;
+use App\Models\PlayerDocument;
 
 class PlayersController extends Controller
 {
@@ -38,6 +39,10 @@ class PlayersController extends Controller
     }
 
     public function store(Request $request){
+        $request->validate([
+            'ci' => ['required', 'unique:players', 'max:191'],
+        ]);
+
         DB::beginTransaction();
         try {
             $player = Player::create([
@@ -51,17 +56,27 @@ class PlayersController extends Controller
             ]);
 
             foreach ($request->team_id as $value) {
-                TeamPlayer::create([
-                    'team_id' => $value,
-                    'player_id' => $player->id,
-                ]);
+                $players = TeamPlayer::whereHas('player', function($q){
+                                    $q->where('status', 'activo')->where('deleted_at', null);
+                                })
+                                ->where('team_id', $value)
+                                ->where('deleted_at', null)->count();
+                if($players < 30){
+                    TeamPlayer::create([
+                        'team_id' => $value,
+                        'player_id' => $player->id,
+                    ]);
+                }else{
+                    return redirect()->route('voyager.players.create')->with(['message' => 'El quipo seleccionado tiene más de 30 jugadores hábiles', 'alert-type' => 'error']);
+                }
             }
-
+            
             DB::commit();
-            return redirect()->route('voyager.players.index')->with(['message' => 'Jugador añadido exitosamente.', 'alert-type' => 'success']);
+            return redirect()->route('voyager.players.index')->with(['message' => 'Jugador añadido exitosamente', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
             DB::rollback();
             // dd($th);
+            return redirect()->route('voyager.players.index')->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
         }
     }
 
@@ -203,8 +218,27 @@ class PlayersController extends Controller
         }
     }
 
-    function documents_store($id){
+    function documents_store($id, Request $request){
+        try {
+            $file = $request->file('file');
+            $file_name = Str::random(20).'.'.$file->getClientOriginalExtension();
+            $dir = "documents/".date('F').date('Y');
+            Storage::makeDirectory($dir);
+            Storage::disk('public')->put($dir.'/'.$file_name, file_get_contents($file));
+            PlayerDocument::create([
+                'player_id' => $id,
+                'type' => $request->type,
+                'full_name' => $request->full_name,
+                'ci' => $request->ci,
+                'origin' => $request->origin,
+                'file' => $dir.'/'.$file_name
+            ]);
 
+            return redirect()->route('voyager.players.index')->with(['message' => 'Archivo agregado correctamente.', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()->route('voyager.players.index')->with(['message' => 'Ocurrio un error.', 'alert-type' => 'error']);
+        }
     }
 
     // ===============================================

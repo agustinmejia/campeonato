@@ -115,7 +115,7 @@ class ChampionshipsController extends Controller
      */
     public function show($id)
     {
-        $championship = Championship::with(['teams.team', 'details.local.team_players.player', 'details.visitor.team_players.player'])->find($id);
+        $championship = Championship::with(['teams.team', 'details.local.team_players.player', 'details.visitor.team_players.player', 'details.players.cards'])->find($id);
         return view('championships.read', compact('championship'));
     }
 

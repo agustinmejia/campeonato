@@ -1,13 +1,19 @@
 <div>
+    @if ($players->count() > 0)
+        <div class="text-right">
+            <button type="button" onclick="report_export('pdf')" class="btn btn-danger">PDF <i class="voyager-file-text"></i></button>
+        </div>
+    @endif
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th>N&deg;</th>
-                <th>Nombre(s)</th>
-                <th>Apellidos</th>
+                <th>Fotografía</th>
+                <th>Nombre completo</th>
                 <th>CI</th>
                 <th>Edad</th>
                 <th>Lugar nac.</th>
+                <th>Datos adicionales</th>
             </tr>
         </thead>
         <tbody>
@@ -25,11 +31,25 @@
                 @endphp
                 <tr>
                     <td>{{ $cont }}</td>
-                    <td>{{ $item->player->first_name }}</td>
-                    <td>{{ $item->player->last_name }}</td>
+                    <td>
+                        @if ($item->player->image)
+                            <img src="{{ asset('storage/'.$item->player->image) }}" width="50px" />
+                        @else
+                            <img src="{{ asset('images/default.jpg') }}" width="50px" />
+                        @endif
+                    </td>
+                    <td>{{ $item->player->first_name }} {{ $item->player->last_name }}</td>
                     <td>{{ $item->player->ci }}</td>
                     <td>{{ $age }} años</td>
                     <td>{{ Str::ucfirst($item->player->origin) }}</td>
+                    <td>
+                        @foreach ($item->player->documents as $document)
+                            <span>
+                                {{ $document->full_name }} (<b>{{ Str::ucfirst($document->type) }}</b>) <br>
+                                CI: {{ $document->ci }} | {{ $document->origin }} <a href="{{ url('storage/'.$document->file) }}" title="Ver documento" target="_blank"><i class="voyager-external"></i></a>
+                            </span>
+                        @endforeach
+                    </td>
                 </tr>
                 @php
                     $cont++;

@@ -21,14 +21,14 @@ class PlayersTransfer extends Model
     ];
 
     public function player(){
-        return $this->belongsTo(Player::class, 'player_id');
+        return $this->belongsTo(Player::class, 'player_id')->withTrashed();
     }
 
     public function origin_club(){
-        return $this->belongsTo(Club::class, 'origin', 'id');
+        return $this->belongsTo(Club::class, 'origin', 'id')->withTrashed();
     }
 
     public function destiny_club(){
-        return $this->belongsTo(Club::class, 'destiny', 'id');
+        return $this->belongsTo(Club::class, 'destiny', 'id')->withTrashed();
     }
 }

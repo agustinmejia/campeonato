@@ -27,7 +27,7 @@
                             <div class="col-md-4">
                                 <form id="form-report" name="form_report" action="{{ route('reports.players.list') }}" method="post">
                                     @csrf
-                                    <input type="hidden" name="print">
+                                    <input type="hidden" name="export">
                                     <div class="form-group">
                                         <select name="team_id" id="" class="select2">
                                             <option value="">Todos los equipos</option>
@@ -54,34 +54,33 @@
     @stop
 
     @section('javascript')
-        <script src="{{ url('js/main.js') }}"></script>
         <script>
             $(document).ready(function() {
-                    $('#form-report').on('submit', function(e){
-                        e.preventDefault();
-                        $('#results').empty();
-                        // $('#results').loading({message: 'Cargando...'});
-                        $.post($('#form-report').attr('action'), $('#form-report').serialize(), function(res){
-                            $('#results').html(res);
-                        })
-                        .fail(function() {
-                            toastr.error('Ocurrió un error!', 'Oops!');
-                        })
-                        .always(function() {
-                            // $('#results').loading('toggle');
-                            $('html, body').animate({
-                                scrollTop: $("#results").offset().top - 70
-                            }, 500);
-                        });
+                $('#form-report').on('submit', function(e){
+                    e.preventDefault();
+                    $('#results').empty();
+                    // $('#results').loading({message: 'Cargando...'});
+                    $.post($('#form-report').attr('action'), $('#form-report').serialize(), function(res){
+                        $('#results').html(res);
+                    })
+                    .fail(function() {
+                        toastr.error('Ocurrió un error!', 'Oops!');
+                    })
+                    .always(function() {
+                        // $('#results').loading('toggle');
+                        $('html, body').animate({
+                            scrollTop: $("#results").offset().top - 70
+                        }, 500);
                     });
                 });
-                function report_print(){
-                    $('#form-report').attr('target', '_blank');
-                    $('#form-report input[name="print"]').val(1);
-                    window.form_report.submit();
-                    $('#form-report').removeAttr('target');
-                    $('#form-report input[name="print"]').val('');
-                }
+            });
+            function report_export(type){
+                $('#form-report').attr('target', '_blank');
+                $('#form-report input[name="export"]').val(type);
+                window.form_report.submit();
+                $('#form-report').removeAttr('target');
+                $('#form-report input[name="export"]').val('');
+            }
         </script>
     @stop
 @endif

@@ -20,7 +20,7 @@ class CreatePlayerDocumentsTable extends Migration
             $table->string('full_name')->nullable();
             $table->string('ci')->nullable();
             $table->string('origin')->nullable();
-            $table->string('image')->nullable();
+            $table->string('file')->nullable();
             $table->text('observations')->nullable();
             $table->timestamps();
             $table->softDeletes();

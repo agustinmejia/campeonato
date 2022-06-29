@@ -89,6 +89,7 @@
                                         <th>Local</th>
                                         <th>Visitante</th>
                                         <th>Fecha y hora</th>
+                                        <th>Tarjetas</th>
                                         <th class="text-center">Resultado</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -104,6 +105,17 @@
                                             <td><img src="{{ $detail->local->club->logo ? asset('storage/'.$detail->local->club->logo) : asset('images/default.jpg') }}" width="20px" alt=""> {{ $detail->local->name }}</td>
                                             <td><img src="{{ $detail->visitor->club->logo ? asset('storage/'.$detail->visitor->club->logo) : asset('images/default.jpg') }}" width="20px" alt=""> {{ $detail->visitor->name }}</td>
                                             <td>{{ date('d/m/Y H:i', strtotime($detail->datetime)) }}</td>
+                                            <td>
+                                                @php
+                                                    $yellow_cards = 0;
+                                                    $red_cards = 0;
+                                                    foreach ($detail->players as $player){
+                                                        $yellow_cards += $player->cards->where('type', 'yellow')->count();
+                                                        $red_cards += $player->cards->where('type', 'red')->count();
+                                                    }
+                                                @endphp
+                                                <img src="{{ asset('images/yellow-card.png') }}" width="12px"> <b>{{ $yellow_cards }}</b> | <img src="{{ asset('images/red-card.png') }}" width="12px"> <b>{{ $red_cards }}</b>
+                                            </td>
                                             <td class="text-center">
                                                 @if ($detail->status == 'finalizado')
                                                     @if ($detail->win_type == 'normal')

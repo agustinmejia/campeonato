@@ -22,15 +22,20 @@
                         <div class="panel-body">
                             <div class="form-group  col-md-6 ">
                                 <label class="control-label" for="first_name">Nombre(s)</label>
-                                <input type="text" class="form-control" name="first_name" placeholder="Nombre(s)" value="{{ isset($player) ? $player->first_name : '' }}" required>
+                                <input type="text" class="form-control" name="first_name" placeholder="Nombre(s)" value="{{ isset($player) ? $player->first_name : old('first_name') }}" required>
                             </div>
                             <div class="form-group  col-md-6 ">
                                 <label class="control-label" for="last_name">Apellidos</label>
-                                <input type="text" class="form-control" name="last_name" placeholder="Apellidos" value="{{ isset($player) ? $player->last_name : '' }}" required>
+                                <input type="text" class="form-control" name="last_name" placeholder="Apellidos" value="{{ isset($player) ? $player->last_name : old('last_name') }}" required>
                             </div>
                             <div class="form-group  col-md-6 ">
                                 <label class="control-label" for="ci">CI</label>
-                                <input type="text" class="form-control" name="ci" placeholder="CI" value="{{ isset($player) ? $player->ci : '' }}" required>
+                                <input type="text" class="form-control" name="ci" placeholder="CI" value="{{ isset($player) ? $player->ci : old('ci') }}" required>
+                                @if ($errors->has('ci'))
+                                    @foreach ($errors->get('ci') as $error)
+                                        <span class="help-block text-danger">{{ $error }}</span>
+                                    @endforeach
+                                @endif
                             </div>
                             <div class="form-group  col-md-6 ">
                                 <label class="control-label" for="gender">Género</label>
@@ -41,7 +46,7 @@
                             </div>   
                             <div class="form-group  col-md-6 ">
                                 <label class="control-label" for="birthday">Fecha de nacimiento</label>
-                                <input type="date" class="form-control" name="birthday" placeholder="Fecha de nacimiento" value="{{ isset($player) ? $player->birthday : '' }}" required>
+                                <input type="date" class="form-control" name="birthday" placeholder="Fecha de nacimiento" value="{{ isset($player) ? $player->birthday : old('birthday') }}" required>
                             </div>
                             <div class="form-group  col-md-6 ">
                                 <label class="control-label" for="origin">Lugar de nacimiento</label>

@@ -5,6 +5,12 @@
 @section('content')
     <div class="page-content read container-fluid">
         <div class="row">
+            @if($game->status != 'finalizado')
+                <div class="col-md-12 text-right" style="margin: 0px">
+                    <a href="{{ route('championships.show', ['championship' => $game->championship_id]) }}" class="btn btn-warning btn-lg" style="padding: 10px 20px; margin: 20px 2px"><i class="glyphicon glyphicon-arrow-left"></i> Salir</a>
+                    <button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#finish-modal" style="padding: 10px 20px; margin: 20px 2px">Finalizar partido <i class="glyphicon glyphicon-time"></i></button>
+                </div>
+            @endif
             <div class="col-md-12">
                 @php
                     $local_goals = 0;
@@ -244,16 +250,6 @@
                         </div>
                     </div>
                 </div>
-                
-                @if($game->status != 'finalizado')
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel panel-bordered text-right">
-                                <button class="btn btn-danger btn-lg" data-toggle="modal" data-target="#finish-modal" style="padding: 10px 20px; margin: 20px 10px">Finalizar partido <i class="glyphicon glyphicon-time"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                @endif
             </div>
         </div>
     </div>

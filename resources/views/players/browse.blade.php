@@ -70,9 +70,9 @@
                                                                 <li><a href="{{ route('players.print', ['id' => $item->id, 'type' => 'certificado']) }}" target="_blank">Imprimir kardex</a></li>
                                                                 <li class="divider"></li>
                                                                 <li><a href="{{ route('players.transfers', ['id' => $item->id]) }}">Traspasos</a></li>
-                                                                {{-- @if ($item->origin == 'beni') --}}
+                                                                @if ($item->origin == 'beni')
                                                                 <li><a href="#" class="btn-documents" data-item='@json($item)' data-toggle="modal" data-target="#documents_modal">Datos de los padres</a></li>
-                                                                {{-- @endif --}}
+                                                                @endif
                                                             </ul>
                                                         </div>
                                                     @endif
@@ -104,44 +104,70 @@
         </div>
 
         {{-- Documents modal --}}
-        <form id="form-documents" action="" id="delete_form" method="POST">
+        <form id="form-documents" action="" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="modal fade" tabindex="-1" id="documents_modal" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title"><i class="voyager-person"></i> Documentos</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label for="type">Parentesco</label>
-                                <select name="type" class="form-control" required>
-                                    <option value="">Seleccione el parentesco</option>
-                                    <option value="padre">Padre</option>
-                                    <option value="madre">Madre</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="full_name">Nombre completo</label>
-                                <input type="text" name="full_name" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="ci">CI</label>
-                                <input type="text" name="ci" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="type">Procedencia</label>
-                                <select name="type" class="form-control" required>
-                                    <option value="">Seleccione la procedencia</option>
-                                    @foreach (['chuquisaca', 'la paz', 'oruro', 'pando', 'potosí', 'santa cruz', 'tarija' ] as $item)
-                                    <option value="{{ $item }}">{{ Str::ucfirst($item) }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="file">Documento</label>
-                                <input type="file" name="file" class="form-control" accept="application/pdf" required>
-                            </div>
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#tab-list">Lista</a></li>
+                                <li><a data-toggle="tab" href="#tab-create">Nuevo</a></li>
+                              </ul>
+                              
+                              <div class="tab-content">
+                                <div id="tab-list" class="tab-pane fade in active">
+                                    <table id="table-documents" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>N&deg;</th>
+                                                <th>Parentesco</th>
+                                                <th>Nombre completo</th>
+                                                <th>Procedencia</th>
+                                                <th>Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                                <div id="tab-create" class="tab-pane fade">
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label for="type">Parentesco</label>
+                                            <select name="type" class="form-control" required>
+                                                <option value="">Seleccione el parentesco</option>
+                                                <option value="padre">Padre</option>
+                                                <option value="madre">Madre</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="full_name">Nombre completo</label>
+                                            <input type="text" name="full_name" class="form-control" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="ci">CI</label>
+                                            <input type="text" name="ci" class="form-control" required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="origin">Procedencia</label>
+                                            <select name="origin" class="form-control" required>
+                                                <option value="">Seleccione la procedencia</option>
+                                                @foreach (['chuquisaca', 'la paz', 'oruro', 'pando', 'potosí', 'santa cruz', 'tarija' ] as $item)
+                                                <option value="{{ $item }}">{{ Str::ucfirst($item) }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group  col-md-6">
+                                            <label for="file">Documento</label>
+                                            <input type="file" name="file" class="form-control" accept="application/pdf" required>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
                         </div>
                         <div class="modal-footer text-right">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -164,7 +190,25 @@
 
                 $('.btn-documents').click(function(){
                     let item = $(this).data('item');
+                    let url = '{{ url("") }}';
+
+                    $('#form-documents').attr('action', `${url}/admin/players/${item.id}/documents/store`);
                     console.log(item)
+
+                    $('#table-documents tbody').empty();
+                    item.documents.map((item, index) => {
+                        $('#table-documents tbody').append(`
+                            <tr>
+                                <td>${index +1}</td>
+                                <td>${item.type}</td>
+                                <td>${item.full_name} <br> <small>${item.ci}</small></td>
+                                <td>${item.origin}</td>
+                                <td>
+                                    <a href="${url}/storage/${item.file}" class="btn btn-warning" target="_blank"><i class="voyager-eye"></i></a>    
+                                </td>
+                            </tr>
+                        `);
+                    });
                 });
             });
 

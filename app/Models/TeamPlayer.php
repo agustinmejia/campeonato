@@ -19,10 +19,10 @@ class TeamPlayer extends Model
     ];
 
     public function team(){
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Team::class)->withTrashed();
     }
 
     public function player(){
-        return $this->belongsTo(Player::class);
+        return $this->belongsTo(Player::class)->withTrashed();
     }
 }

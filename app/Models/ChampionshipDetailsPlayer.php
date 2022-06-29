@@ -21,7 +21,7 @@ class ChampionshipDetailsPlayer extends Model
     ];
 
     public function player(){
-        return $this->belongsTo(Player::class, 'player_id');
+        return $this->belongsTo(Player::class, 'player_id')->withTrashed();
     }
 
     public function goals(){
