@@ -1,1 +1,3 @@
-Eliminar tablas championship_detail_goals y championship_detail_cards
+crear settings setting('precios.yellow-card') setting('precios.red-card')
+
+eliminar todas las tablas relacionadas con championships

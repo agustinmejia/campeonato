@@ -39,6 +39,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('players');
         Permission::generateFor('delegates');
         Permission::generateFor('championships');
+        Permission::generateFor('championshipscategories');
 
         $keys = [
             'options_players',

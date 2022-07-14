@@ -58,7 +58,7 @@
             </div>
             <table class="table-container">
                 <tr>
-                    <td colspan="2" style="text-align: center"><h3 style="margin: 0px">CREDENCIAL DE DELAGADO</h3></td>
+                    <td colspan="2" style="text-align: center"><h3 style="margin: 0px">CREDENCIAL DE DELEGADO</h3></td>
                 </tr>
                 <tr>
                     <td style="text-align: center; width: 100px">

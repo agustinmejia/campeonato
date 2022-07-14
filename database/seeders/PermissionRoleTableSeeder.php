@@ -36,7 +36,7 @@ class PermissionRoleTableSeeder extends Seeder
                                                 `table_name` = 'settings'")->get();
         $role->permissions()->sync($permissions->pluck('id')->all());
         
-        // Rol de delagado de club
+        // Rol de delegado de club
         $role = Role::where('name', 'delegado_club')->firstOrFail();
         $permissions = Permission::whereRaw("   `key` = 'browse_admin' or
                                                 `key` = 'browse_players' or

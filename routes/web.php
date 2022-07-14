@@ -7,7 +7,7 @@ use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\PlayersController;
 use App\Http\Controllers\DelegatesController;
 use App\Http\Controllers\GamesController;
-use App\Http\Controllers\ChampionshipsController;
+use App\Http\Controllers\ChampionshipsCategoriesController;
 use App\Http\Controllers\ReportsController;
 
 /*
@@ -26,7 +26,7 @@ Route::get('login', function () {
 })->name('login');
 
 Route::get('/', function () {
-    return redirect('admin');
+    return view('welcome');
 });
 
 
@@ -49,14 +49,14 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::get('delegates/{id}/print', [DelegatesController::class, 'print'])->name('delegates.print');
 
-    Route::resource('championships', ChampionshipsController::class);
-    Route::get('championships/list/ajax/{search?}', [ChampionshipsController::class, 'list']);
-    Route::post('championships/{id}/details/enable', [ChampionshipsController::class, 'details_enable'])->name('championships.details.enable');
-    Route::get('championships/game/{id}', [ChampionshipsController::class, 'game'])->name('championships.game');
-    Route::post('championships/game/{id}/goal', [ChampionshipsController::class, 'game_goal'])->name('championships.game.goal');
-    Route::post('championships/game/{id}/card', [ChampionshipsController::class, 'game_card'])->name('championships.game.card');
-    Route::post('championships/game/{id}/change', [ChampionshipsController::class, 'game_change'])->name('championships.game.change');
-    Route::post('championships/game/{id}/finish', [ChampionshipsController::class, 'game_finish'])->name('championships.game.finish');
+    Route::resource('championshipscategories', ChampionshipsCategoriesController::class);
+    Route::get('championshipscategories/list/ajax/{search?}', [ChampionshipsCategoriesController::class, 'list']);
+    Route::post('championshipscategories/{id}/details/enable', [ChampionshipsCategoriesController::class, 'details_enable'])->name('championshipscategories.details.enable');
+    Route::get('championshipscategories/game/{id}', [ChampionshipsCategoriesController::class, 'game'])->name('championshipscategories.game');
+    Route::post('championshipscategories/game/{id}/goal', [ChampionshipsCategoriesController::class, 'game_goal'])->name('championshipscategories.game.goal');
+    Route::post('championshipscategories/game/{id}/card', [ChampionshipsCategoriesController::class, 'game_card'])->name('championshipscategories.game.card');
+    Route::post('championshipscategories/game/{id}/change', [ChampionshipsCategoriesController::class, 'game_change'])->name('championshipscategories.game.change');
+    Route::post('championshipscategories/game/{id}/finish', [ChampionshipsCategoriesController::class, 'game_finish'])->name('championshipscategories.game.finish');
 
     Route::get('reports/players', [ReportsController::class, 'players_index'])->name('reports.players.index');
     Route::post('reports/players/list', [ReportsController::class, 'players_list'])->name('reports.players.list');

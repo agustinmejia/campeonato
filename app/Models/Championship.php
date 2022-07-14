@@ -11,23 +11,10 @@ class Championship extends Model
     use HasFactory, SoftDeletes;
     protected $dates = ['deleted_at'];
     protected $fillable = [
-        'category_id',
         'name',
         'start',
         'finish',
         'year',
         'status'
     ];
-
-    public function category(){
-        return $this->belongsTo(Category::class);
-    }
-
-    public function teams(){
-        return $this->hasMany(ChampionshipTeam::class);
-    }
-
-    public function details(){
-        return $this->hasMany(ChampionshipDetail::class);
-    }
 }
