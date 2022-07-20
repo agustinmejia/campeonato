@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 // Models
 use App\Models\Player;
@@ -125,7 +126,8 @@ class ChampionshipsCategoriesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $fixture = ChampionshipsCategory::with(['championship', 'category','teams.team', 'details.local.team_players.player', 'details.visitor.team_players.player', 'details.players.cards'])->find($id);
+        return view('championshipscategories.edit-add', compact('fixture'));
     }
 
     /**
@@ -137,7 +139,40 @@ class ChampionshipsCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+
+            // Registrar lista de equipos del campeonato
+            $teams = array_unique(array_merge($request->local_id,$request->visitor_id), SORT_REGULAR);
+            foreach ($teams as $team) {
+                ChampionshipsTeam::firstOrNew([
+                    'championships_category_id' => $id,
+                    'team_id' => $team,
+                    'deleted_at' => NULL
+                ]);
+            }
+
+            // Registrar encuentros
+            for ($i = 0; $i < count($request->local_id); $i++) {
+                ChampionshipsDetail::create([
+                    'championships_category_id' => $id,
+                    'local_id' => $request->local_id[$i],
+                    'visitor_id' => $request->visitor_id[$i],
+                    'title' => $request->title[$i],
+                    'datetime' => $request->datetime[$i]
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('championshipscategories.index')->with(['message' => 'Campeonato editado exitosamente', 'alert-type' => 'success']);
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            // dd($th);
+            return redirect()->route('championshipscategories.index')->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
+        }
+
     }
 
     /**
@@ -216,6 +251,19 @@ class ChampionshipsCategoriesController extends Controller
         }
     }
 
+    public function game_goal_delete($id, Request $request){
+        // dd($request->all());
+        try {
+            ChampionshipsDetailsPlayersGoal::where('id', $request->championships_details_players_goal_id)->update([
+                'deleted_at' => Carbon::now()
+            ]);
+            return redirect()->route('championshipscategories.game', ['id' => $id])->with(['message' => 'Gol anulado', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            // dd($th);
+            return redirect()->route('championshipscategories.game', ['id' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
+        }
+    }
+
     public function game_card($id, Request $request){
         try {
 
@@ -255,6 +303,27 @@ class ChampionshipsCategoriesController extends Controller
             return redirect()->route('championshipscategories.game', ['id' => $id])->with(['message' => 'Tarjeta registrada', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
             //throw $th;
+            return redirect()->route('championshipscategories.game', ['id' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
+        }
+    }
+
+    public function game_card_delete($id, Request $request){
+        // dd($request->all());
+        try {
+            $card = ChampionshipsDetailsPlayersCard::find($request->championships_details_players_card_id);
+            $card->deleted_at = Carbon::now();
+            $card->update();
+
+            if($card->type == 'red'){
+                $player = ChampionshipsDetailsPlayer::find($card->championships_details_player_id);
+                $player->status = 'activo';
+                $player->playing = 1;
+                $player->update();
+            }
+
+            return redirect()->route('championshipscategories.game', ['id' => $id])->with(['message' => 'Tarjeta anulada', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            // dd($th);
             return redirect()->route('championshipscategories.game', ['id' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
         }
     }

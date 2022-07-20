@@ -209,6 +209,9 @@
                                                 @endif
                                             </td>
                                         </tr>
+                                        @php
+                                            $cont++;
+                                        @endphp
                                     @endforeach
                                 </tbody>
                             </table>

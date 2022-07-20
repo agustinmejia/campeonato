@@ -5,8 +5,15 @@
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
         <title>Residentes - Bienvenido</title>
-        <meta content="" name="description">
-        <meta content="" name="keywords">
+        <meta name="description" content="Liga de Residentes del Interior">
+        {{-- <meta name="keywords" content="cadbeni, colegio, arquitecto, beni"> --}}
+
+        <meta name="description" content="Colegio de Arquitectos del Beni">
+
+        <meta property="og:url"           content="{{ url('') }}" />
+        <meta property="og:title"         content="Residentes | Bienvenido" />
+        <meta property="og:description"   content="Liga de Residentes del Interior" />
+        <meta property="og:image"         content="{{ asset('images/icon.png') }}" />
 
         <!-- Favicons -->
         <link href="{{ asset('images/icon.png') }}" rel="icon">

@@ -54,7 +54,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('championshipscategories/{id}/details/enable', [ChampionshipsCategoriesController::class, 'details_enable'])->name('championshipscategories.details.enable');
     Route::get('championshipscategories/game/{id}', [ChampionshipsCategoriesController::class, 'game'])->name('championshipscategories.game');
     Route::post('championshipscategories/game/{id}/goal', [ChampionshipsCategoriesController::class, 'game_goal'])->name('championshipscategories.game.goal');
+    Route::post('championshipscategories/game/{id}/goal/delete', [ChampionshipsCategoriesController::class, 'game_goal_delete'])->name('championshipscategories.game.goal.delete');
     Route::post('championshipscategories/game/{id}/card', [ChampionshipsCategoriesController::class, 'game_card'])->name('championshipscategories.game.card');
+    Route::post('championshipscategories/game/{id}/card/delete', [ChampionshipsCategoriesController::class, 'game_card_delete'])->name('championshipscategories.game.card.delete');
     Route::post('championshipscategories/game/{id}/change', [ChampionshipsCategoriesController::class, 'game_change'])->name('championshipscategories.game.change');
     Route::post('championshipscategories/game/{id}/finish', [ChampionshipsCategoriesController::class, 'game_finish'])->name('championshipscategories.game.finish');
 

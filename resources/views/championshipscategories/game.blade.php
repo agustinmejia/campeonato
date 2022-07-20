@@ -25,6 +25,7 @@
                                     if($goal->type == 'normal' || $goal->type == 'penal'){
                                         $local_goals++;
                                         $local_goals_details->push([
+                                            'id' => $goal->id,
                                             'player' => $item->player->first_name,
                                             'number' => $item->number,
                                             'type' => $goal->type,
@@ -33,6 +34,7 @@
                                     }elseif($goal->type == 'autogol'){
                                         $visitor_goals++;
                                         $visitor_goals_details->push([
+                                            'id' => $goal->id,
                                             'player' => $item->player->first_name,
                                             'number' => $item->number,
                                             'type' => $goal->type,
@@ -50,6 +52,7 @@
                                     if($goal->type == 'normal' || $goal->type == 'penal'){
                                         $visitor_goals++;
                                         $visitor_goals_details->push([
+                                            'id' => $goal->id,
                                             'player' => $item->player->first_name,
                                             'number' => $item->number,
                                             'type' => $goal->type,
@@ -58,6 +61,7 @@
                                     }elseif($goal->type == 'autogol'){
                                         $local_goals++;
                                         $local_goals_details->push([
+                                            'id' => $goal->id,
                                             'player' => $item->player->first_name,
                                             'number' => $item->number,
                                             'type' => $goal->type,
@@ -78,7 +82,8 @@
                                 <div><img src="{{ $game->local->club->logo ? asset('storage/'.$game->local->club->logo) : asset('images/default.jpg') }}" width="60px" alt=""></div>
                             </div>
                             @foreach ($local_goals_details->sortBy('min') as $item)
-                                <small>{{ $item['player'] }} {{ $item['min'] }}' @if($item['type'] != 'normal') ({{ substr($item['type'], 0, 1) }}) @endif</small> <br>
+                                {{-- {{ dd($item) }} --}}
+                                <a href="#" class="btn-delete-goal" data-id="{{ $item['id'] }}" data-toggle="modal" data-target="#goal-delete-modal"><small>{{ $item['player'] }} {{ $item['min'] }}' @if($item['type'] != 'normal') ({{ substr($item['type'], 0, 1) }}) @endif</small></a> <br>
                             @endforeach
                         </div>
                         <div class="col-xs-4 col-sm-4 text-center">
@@ -105,7 +110,7 @@
                                 <div><img src="{{ $game->visitor->club->logo ? asset('storage/'.$game->visitor->club->logo) : asset('images/default.jpg') }}" width="60px" alt=""></div>
                             </div>
                             @foreach ($visitor_goals_details->sortBy('min') as $item)
-                                <small>{{ $item['player'] }} {{ $item['min'] }}' @if($item['type'] != 'normal') ({{ substr($item['type'], 0, 1) }}) @endif</small> <br>
+                            <a href="#" class="btn-delete-goal" data-id="{{ $item['id'] }}" data-toggle="modal" data-target="#goal-delete-modal"><small>{{ $item['player'] }} {{ $item['min'] }}' @if($item['type'] != 'normal') ({{ substr($item['type'], 0, 1) }}) @endif</small></a> <br>
                             @endforeach
                         </div>
                     </div>
@@ -153,7 +158,7 @@
                                                                         {{ $item->player->first_name }} {{ $item->player->last_name }} 
                                                                         @if($item->number) ({{ $item->number }}) @endif
                                                                         @foreach ($item->cards as $card)
-                                                                            <img src="{{ $card->type == 'yellow' ? asset('images/yellow-card.png') : asset('images/red-card.png') }}" width="10px" alt="">
+                                                                            <a href="#" class="btn-delete-card" data-toggle="modal" data-target="#card-delete-modal" data-id="{{ $card->id }}"><img src="{{ $card->type == 'yellow' ? asset('images/yellow-card.png') : asset('images/red-card.png') }}" width="10px" alt=""></a>
                                                                         @endforeach
                                                                     </h5>
                                                                 </td>
@@ -214,7 +219,7 @@
                                                                     {{ $item->player->first_name }} {{ $item->player->last_name }}
                                                                     @if($item->number) ({{ $item->number }}) @endif
                                                                     @foreach ($item->cards as $card)
-                                                                        <img src="{{ $card->type == 'yellow' ? asset('images/yellow-card.png') : asset('images/red-card.png') }}" width="10px" alt="">
+                                                                        <a href="#" class="btn-delete-card" data-toggle="modal" data-target="#card-delete-modal" data-id="{{ $card->id }}"><img src="{{ $card->type == 'yellow' ? asset('images/yellow-card.png') : asset('images/red-card.png') }}" width="10px" alt=""></a>
                                                                     @endforeach
                                                                 </h5>
                                                             </td>
@@ -270,7 +275,30 @@
                     </div>
                     <div class="modal-footer text-right">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Registrar</button>
+                        <button type="submit" class="btn btn-primary btn-submit">Registrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {{-- Goal modal --}}
+    <form id="form-delete-goal" action="{{ route('championshipscategories.game.goal.delete', ['id' => $game->id]) }}" method="post">
+        @csrf
+        <input type="hidden" name="championships_details_players_goal_id">
+        <div class="modal fade modal-danger" tabindex="-1" id="goal-delete-modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="voyager-trash"></i> Eliminar gol</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Desea eliminar el siguiente gol?</p>
+                    </div>
+                    <div class="modal-footer text-right">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
                     </div>
                 </div>
             </div>
@@ -307,7 +335,30 @@
                     </div>
                     <div class="modal-footer text-right">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Registrar</button>
+                        <button type="submit" class="btn btn-primary btn-submit">Registrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {{-- Card delete modal --}}
+    <form id="form-delete-card" action="{{ route('championshipscategories.game.card.delete', ['id' => $game->id]) }}" method="post">
+        @csrf
+        <input type="hidden" name="championships_details_players_card_id">
+        <div class="modal fade modal-danger" tabindex="-1" id="card-delete-modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="voyager-trash"></i> Eliminar tarjeta</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Desea eliminar el siguiente tarjeta?</p>
+                    </div>
+                    <div class="modal-footer text-right">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
                     </div>
                 </div>
             </div>
@@ -333,7 +384,7 @@
                     </div>
                     <div class="modal-footer text-right">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Registrar</button>
+                        <button type="submit" class="btn btn-primary btn-submit">Registrar</button>
                     </div>
                 </div>
             </div>
@@ -380,7 +431,7 @@
                     </div>
                     <div class="modal-footer text-right">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Finalizar</button>
+                        <button type="submit" class="btn btn-danger btn-submit">Finalizar</button>
                     </div>
                 </div>
             </div>
@@ -449,12 +500,16 @@
             stop.disabled = false;
         }
 
-        // timer();
-        start.onclick = timer;
+        start.onclick = function(){
+            toastr.success(min == 0 && sec == 0 ? 'Inicio' : 'Reanudación');
+            timer();
+        };
+        // start.onclick = timer;
         stop.onclick = function() {
             clearTimeout(t);
             start.disabled = false;
             stop.disabled = true;
+            toastr.info('Pause')
         }
         reset.onclick = function() {
             clearTimeout(t);
@@ -512,6 +567,22 @@
             $('#form-finish input[name="win_type"]').click(function(){
                 let value = $("#form-finish input[name='win_type']:checked").val();
                 value == 'normal' ? $('#div-winner_id_alt').fadeOut() : $('#div-winner_id_alt').fadeIn();
+            });
+
+            $('.btn-delete-goal').click(function(){
+                let id = $(this).data('id');
+                $('#form-delete-goal input[name="championships_details_players_goal_id"]').val(id);
+            });
+
+            $('.btn-delete-card').click(function(){
+                let id = $(this).data('id');
+                $('#form-delete-card input[name="championships_details_players_card_id"]').val(id);
+            });
+
+            $('.btn-submit').click(function(){
+                setTimeout(() => {
+                    $(this).attr('disabled', 'disabled');
+                }, 0);
             });
         });
     </script>

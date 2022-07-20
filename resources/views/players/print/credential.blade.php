@@ -30,7 +30,7 @@
             }
             .table-container{
                 width: 100%;
-                margin-top: 90px
+                /* margin-top: 90px */
             }
             .text-red{
                 color: red;
@@ -64,6 +64,9 @@
         </div>
         <div class="container">
             <table class="table-container">
+                <tr>
+                    <td colspan="2" style="text-align: center"><img src="{{ asset('images/logo-alt.png') }}" alt="" style="height: 90px"></td>
+                </tr>
                 <tr>
                     <td style="text-align: center; width: 100px">
                         <b class="text-red" style="margin-bottom: 10px">COD: {{ str_pad($player->id, 4, "0", STR_PAD_LEFT) }}</b>

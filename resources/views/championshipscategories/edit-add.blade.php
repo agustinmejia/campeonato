@@ -13,8 +13,11 @@
     <div class="page-content edit-add container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form action="{{ route('championshipscategories.store') }}" method="post">
+                <form action="{{ isset($fixture) ? route('championshipscategories.update', $fixture->id) : route('championshipscategories.store') }}" method="post">
                     @csrf
+                    @isset($fixture)
+                        @method('PUT')
+                    @endisset
                     <div class="panel panel-bordered">
                         <div class="panel-body">
                             <div class="form-group col-md-6">
@@ -22,7 +25,7 @@
                                 <select name="championship_id" id="select-championship_id" class="form-control select2" required>
                                     <option value="">Seleccione el campeonato</option>
                                     @foreach (App\Models\Championship::where('status', 'activo')->where('deleted_at', NULL)->get() as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option @isset($fixture) {{ $fixture->championship_id != $item->id ? 'disabled' : '' }} @endisset value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -31,7 +34,7 @@
                                 <select name="category_id" id="select-category_id" class="form-control select2">
                                     <option value="">Seleccione la categoría</option>
                                     @foreach (App\Models\Category::where('status', '1')->where('deleted_at', NULL)->get() as $item)
-                                    <option value="{{ $item->id }}" data-teams='@json($item->teams)'>{{ $item->name }}</option>
+                                    <option @isset($fixture) {{ $fixture->category_id != $item->id ? 'disabled' : '' }} @endisset value="{{ $item->id }}" data-teams='@json($item->teams)'>{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -56,6 +59,25 @@
                                         </thead>
                                         <tbody id="table-fixtures">
                                             <tr id="tr-empty"><td class="text-center" colspan="6">Lista de encuentros vacía</td></tr>
+                                            @isset($fixture)
+                                                @php
+                                                    $cont = 1;
+                                                @endphp
+                                                @foreach ($fixture->details as $item)
+                                                    {{-- {{ dd($item->local->name) }} --}}
+                                                    <tr>
+                                                        <td class="td-item">{{ $cont }}</td>
+                                                        <td>{{ $item->title }}</td>
+                                                        <td>{{ $item->local->name }}</td>
+                                                        <td>{{ $item->visitor->name }}</td>
+                                                        <td>{{ date('d/m/Y H:i', strtotime($item->datetime)) }}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    @php
+                                                        $cont++;
+                                                    @endphp
+                                                @endforeach
+                                            @endisset
                                         </tbody>
                                     </table>
                                 </div>
@@ -79,8 +101,20 @@
     <script>
         var teams;
         $(document).ready(function(){
+
+            @isset($fixture)
+                $('#select-championship_id').val("{{ $fixture->championship_id }}").trigger('change');
+                setTimeout(() => {
+                    $('#select-category_id').val("{{ $fixture->category_id }}").trigger('change');
+                }, 0);
+            @endisset
+
             $('#select-category_id').change(function(){
+                @isset($fixture)
+                    $('#tr-empty').remove();
+                @else
                 $('#table-fixtures').html('<tr id="tr-empty"><td class="text-center" colspan="6">Lista de encuentros vacía</td></tr>');
+                @endisset
                 teams = $(this).find('option:selected').data('teams');
             });
 

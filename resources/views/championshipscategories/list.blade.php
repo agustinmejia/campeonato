@@ -30,7 +30,7 @@
                         <a href="{{ route('championshipscategories.show', ['championshipscategory' => $item->id]) }}" title="Ver" class="btn btn-sm btn-warning view">
                             <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">Ver</span>
                         </a>
-                        <a href="#" title="Editar" class="btn btn-sm btn-primary edit">
+                        <a href="{{ route('championshipscategories.edit', ['championshipscategory' => $item->id]) }}" title="Editar" class="btn btn-sm btn-primary edit">
                             <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">Editar</span>
                         </a>
                         <button title="Borrar" class="btn btn-sm btn-danger delete" onclick="deleteItem('championshipscategories', {{ $item->id }})" data-toggle="modal" data-target="#delete_modal">
