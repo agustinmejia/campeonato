@@ -52,6 +52,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('championshipscategories', ChampionshipsCategoriesController::class);
     Route::get('championshipscategories/list/ajax/{search?}', [ChampionshipsCategoriesController::class, 'list']);
     Route::post('championshipscategories/{id}/details/enable', [ChampionshipsCategoriesController::class, 'details_enable'])->name('championshipscategories.details.enable');
+    Route::post('championshipscategories/{id}/details/destroy', [ChampionshipsCategoriesController::class, 'details_destroy'])->name('championshipscategories.details.destroy');
     Route::get('championshipscategories/game/{id}', [ChampionshipsCategoriesController::class, 'game'])->name('championshipscategories.game');
     Route::post('championshipscategories/game/{id}/goal', [ChampionshipsCategoriesController::class, 'game_goal'])->name('championshipscategories.game.goal');
     Route::post('championshipscategories/game/{id}/goal/delete', [ChampionshipsCategoriesController::class, 'game_goal_delete'])->name('championshipscategories.game.goal.delete');

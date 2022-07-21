@@ -89,6 +89,7 @@ class PlayersController extends Controller
     }
 
     public function update($id, Request $request){
+        // dd($request->all());
         DB::beginTransaction();
         try {
             $player = Player::findOrFail($id);
@@ -101,6 +102,7 @@ class PlayersController extends Controller
             if($request->file('image')){
                 $player->image = $this->store_image($request->file('image'));
             }
+            $player->status = $request->status ? 'activo' : 'inactivo';
             $player->save();
 
             TeamPlayer::where('player_id', $id)->delete();

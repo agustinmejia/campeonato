@@ -13,6 +13,7 @@
                 <th>CI</th>
                 <th>Edad</th>
                 <th>Lugar nac.</th>
+                <th>Estado</th>
                 <th>Datos adicionales</th>
             </tr>
         </thead>
@@ -42,6 +43,13 @@
                     <td>{{ $item->player->ci }}</td>
                     <td>{{ $age }} años</td>
                     <td>{{ Str::ucfirst($item->player->origin) }}</td>
+                    <td>
+                        @if ($item->player->status == 'activo')
+                            <label class="label label-primary">Activo</label>
+                        @else
+                            <label class="label label-default">Inactivo</label>
+                        @endif
+                    </td>
                     <td>
                         @foreach ($item->player->documents as $document)
                             <span>

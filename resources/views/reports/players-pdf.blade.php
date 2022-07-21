@@ -27,6 +27,7 @@
                     <th>CI</th>
                     <th>Edad</th>
                     <th>Lugar nac.</th>
+                    <th>Estado</th>
                     <th>Datos adicionales</th>
                 </tr>
             </thead>
@@ -56,6 +57,13 @@
                         <td>{{ $item->player->ci }}</td>
                         <td>{{ $age }} años</td>
                         <td>{{ Str::ucfirst($item->player->origin) }}</td>
+                        <td>
+                            @if ($item->player->status == 'activo')
+                                <label class="label label-primary">Activo</label>
+                            @else
+                            <label class="label label-default">Inactivo</label>
+                            @endif
+                        </td>
                         <td>
                             @foreach ($item->player->documents as $document)
                                 <span>
@@ -93,6 +101,19 @@
     thead{
         background-color: rgba(102, 112, 131, 0.7);
         color: white
+    }
+    .label{
+        font-size: 10px;
+        padding: 2px 5px;
+        border-radius: 2px
+    }
+    .label-primary{
+        color: white;
+        background-color: #62A8EA
+    }
+    .label-default{
+        color: #91A6AE;
+        background-color: #E4EAEC
     }
 </style>
 </html>

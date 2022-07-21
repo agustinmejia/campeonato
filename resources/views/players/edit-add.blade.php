@@ -80,6 +80,12 @@
                                 <label class="control-label" for="image">Fotografía</label>
                                 <input type="file" name="image" accept="image/*">
                             </div>
+                            @isset($player)
+                            <div class="form-group col-md-6">
+                                <label class="control-label" for="status">Estado</label> <br>
+                                <input type="checkbox" id="check-status" name="status" value="1" data-toggle="toggle" data-onstyle="primary" data-on="Actvo" data-off="Inactivo">
+                            </div>
+                            @endisset
                         </div>
                         <div class="panel-footer text-right">
                             <button type="submit" class="btn btn-primary save">Guardar <i class="voyager-check"></i> </button>
@@ -110,6 +116,9 @@
                         $('#select-club_id').trigger('change');
                     }, 0);
                 }
+                @if($player->status == 'activo')
+                $('#check-status').bootstrapToggle('on')
+                @endif
             @endisset
 
             $('#select-club_id').change(function(){

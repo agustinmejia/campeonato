@@ -41,6 +41,7 @@
                                         <th>lugar nac.</th>
                                         <th>Club</th>
                                         <th>Foto</th>
+                                        <th>Estado</th>
                                         <th class="text-right">Acciones</th>
                                     </thead>
                                     <tbody>
@@ -55,6 +56,13 @@
                                                 <td>
                                                     @if ($item->image)
                                                         <img src="{{ asset('storage/'.$item->image) }}" width="50px" />
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($item->status == 'activo')
+                                                        <label class="label label-primary">Activo</label>
+                                                    @else
+                                                    <label class="label label-default">Inactivo</label>
                                                     @endif
                                                 </td>
                                                 <td class="no-sort no-click bread-actions text-right">

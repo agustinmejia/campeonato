@@ -135,7 +135,7 @@
                                                     $cont = 0;
                                                     $local_enable_change = collect();
                                                 @endphp
-                                                @foreach($game->players->sortBy('number')->sortByDesc('playing') as $item)
+                                                @forelse($game->players->sortBy('number')->sortByDesc('playing') as $item)
                                                     @foreach ($item->player->teams as $team)
                                                         @if ($team->team_id == $game->local_id)
                                                             @php
@@ -175,7 +175,11 @@
                                                             </tr>
                                                         @endif
                                                     @endforeach
-                                                @endforeach
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3">No hay jugadores</td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
                                         </table>
                                     </div>
@@ -196,47 +200,51 @@
                                                     $cont = 0;
                                                     $visitor_enable_change = collect();
                                                 @endphp
-                                                @foreach($game->players->sortBy('number')->sortByDesc('playing') as $item)
-                                                @foreach ($item->player->teams as $team)
-                                                    @if ($team->team_id == $game->visitor_id)
-                                                        @php
-                                                            $cont++;
-                                                            if($item->type == 'suplente' && !$item->playing && $item->status == 'activo'){
-                                                                $visitor_enable_change->push($item->player);
-                                                            }
-                                                        @endphp
-                                                        <tr>
-                                                            <td><h5>{{ $cont }}</h5></td>
-                                                            <td>
-                                                                <h5>
-                                                                    @php
-                                                                        $image = asset('images/default.jpg');
-                                                                        if($item->player->image){
-                                                                            $image = asset('storage/'.str_replace('.', '.', $item->player->image));
-                                                                        }
-                                                                    @endphp
-                                                                    <img class="img-avatar" src="{{ $image }}" alt="">
-                                                                    {{ $item->player->first_name }} {{ $item->player->last_name }}
-                                                                    @if($item->number) ({{ $item->number }}) @endif
-                                                                    @foreach ($item->cards as $card)
-                                                                        <a href="#" class="btn-delete-card" data-toggle="modal" data-target="#card-delete-modal" data-id="{{ $card->id }}"><img src="{{ $card->type == 'yellow' ? asset('images/yellow-card.png') : asset('images/red-card.png') }}" width="10px" alt=""></a>
-                                                                    @endforeach
-                                                                </h5>
-                                                            </td>
-                                                            <td style="width: 140px;" class="td-actions text-right">
-                                                                @if ($game->status != 'finalizado')
-                                                                    @if ($item->playing)
-                                                                        <a href="#" class="btn-change" data-item='@json($item)' data-type="visitor" data-toggle="modal" data-target="#change-modal"><img src="{{ asset('images/change.png') }}" width="25px" alt=""></a>    
-                                                                        <a href="#" class="btn-goal" data-item='@json($item)' data-toggle="modal" data-target="#goal-modal"><img src="{{ asset('images/ball.png') }}" width="25px" alt=""></a>
-                                                                        <a href="#" class="btn-card" data-item='@json($item)' data-type="yellow" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/yellow-card.png') }}" width="25px" alt=""></a>
-                                                                        <a href="#" class="btn-card" data-item='@json($item)' data-type="red" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/red-card.png') }}" width="25px" alt=""></a>
+                                                @forelse($game->players->sortBy('number')->sortByDesc('playing') as $item)
+                                                    @foreach ($item->player->teams as $team)
+                                                        @if ($team->team_id == $game->visitor_id)
+                                                            @php
+                                                                $cont++;
+                                                                if($item->type == 'suplente' && !$item->playing && $item->status == 'activo'){
+                                                                    $visitor_enable_change->push($item->player);
+                                                                }
+                                                            @endphp
+                                                            <tr>
+                                                                <td><h5>{{ $cont }}</h5></td>
+                                                                <td>
+                                                                    <h5>
+                                                                        @php
+                                                                            $image = asset('images/default.jpg');
+                                                                            if($item->player->image){
+                                                                                $image = asset('storage/'.str_replace('.', '.', $item->player->image));
+                                                                            }
+                                                                        @endphp
+                                                                        <img class="img-avatar" src="{{ $image }}" alt="">
+                                                                        {{ $item->player->first_name }} {{ $item->player->last_name }}
+                                                                        @if($item->number) ({{ $item->number }}) @endif
+                                                                        @foreach ($item->cards as $card)
+                                                                            <a href="#" class="btn-delete-card" data-toggle="modal" data-target="#card-delete-modal" data-id="{{ $card->id }}"><img src="{{ $card->type == 'yellow' ? asset('images/yellow-card.png') : asset('images/red-card.png') }}" width="10px" alt=""></a>
+                                                                        @endforeach
+                                                                    </h5>
+                                                                </td>
+                                                                <td style="width: 140px;" class="td-actions text-right">
+                                                                    @if ($game->status != 'finalizado')
+                                                                        @if ($item->playing)
+                                                                            <a href="#" class="btn-change" data-item='@json($item)' data-type="visitor" data-toggle="modal" data-target="#change-modal"><img src="{{ asset('images/change.png') }}" width="25px" alt=""></a>    
+                                                                            <a href="#" class="btn-goal" data-item='@json($item)' data-toggle="modal" data-target="#goal-modal"><img src="{{ asset('images/ball.png') }}" width="25px" alt=""></a>
+                                                                            <a href="#" class="btn-card" data-item='@json($item)' data-type="yellow" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/yellow-card.png') }}" width="25px" alt=""></a>
+                                                                            <a href="#" class="btn-card" data-item='@json($item)' data-type="red" data-toggle="modal" data-target="#card-modal"><img src="{{ asset('images/red-card.png') }}" width="25px" alt=""></a>
+                                                                        @endif
                                                                     @endif
-                                                                @endif
-                                                            </td>
-                                                        </tr>
-                                                    @endif
-                                                @endforeach
-                                            @endforeach
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3">No hay jugadores</td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
                                         </table>
                                     </div>

@@ -71,7 +71,11 @@
                                                         <td>{{ $item->local->name }}</td>
                                                         <td>{{ $item->visitor->name }}</td>
                                                         <td>{{ date('d/m/Y H:i', strtotime($item->datetime)) }}</td>
-                                                        <td></td>
+                                                        <td class="text-center">
+                                                            @if ($item->status == 'pendiente')
+                                                                <button type="button" class="btn-delete" data-toggle="modal" data-target="#delete-modal" data-id="{{ $item->id }}" title="Anular encuentro"><i class="voyager-trash text-danger"></i></button>
+                                                            @endif
+                                                        </td>
                                                     </tr>
                                                     @php
                                                         $cont++;
@@ -88,6 +92,26 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Single delete modal --}}
+    <div class="modal modal-danger fade" tabindex="-1" id="delete-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> Desea eliminar el siguiente registro?</h4>
+                </div>
+                <div class="modal-footer">
+                    <form action="{{ route('championshipscategories.details.destroy', ['id' => $fixture->id]) }}" id="delete-form" method="POST">
+                        @csrf
+                        <input type="hidden" name="id">
+                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Sí, eliminar">
+                    </form>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -149,10 +173,15 @@
                             </select>
                         </td>
                         <td><input type="datetime-local" name="datetime[]" class="form-control" required /></td>
-                        <td style="padding-top: 15px !important"><button type="button" onclick="removeTr('${id}')" class="btn-remove"><i class="voyager-trash text-danger"></i></button></td>
+                        <td class="text-center" style="padding-top: 15px !important"><button type="button" onclick="removeTr('${id}')" class="btn-remove"><i class="voyager-trash text-danger"></i></button></td>
                     </tr>
                 `);
                 setNumber();
+            });
+
+            $('.btn-delete').click(function(){
+                let id = $(this).data('id');
+                $('#delete-form input[name="id"]').val(id);
             });
         });
 

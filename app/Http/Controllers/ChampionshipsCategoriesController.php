@@ -226,8 +226,20 @@ class ChampionshipsCategoriesController extends Controller
             return redirect()->route('championshipscategories.show', ['championshipscategory' => $id])->with(['message' => 'Encuantro habilitado exitosamente', 'alert-type' => 'success']);
         } catch (\Throwable $th) {
             DB::rollback();
-            dd($th);
+            // dd($th);
             return redirect()->route('championshipscategories.show', ['championshipscategory' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
+        }
+    }
+
+    public function details_destroy($id, Request $request){
+        try {
+            $detail = ChampionshipsDetail::find($request->id);
+            $detail->delete();
+
+            return redirect()->route('championshipscategories.edit', ['championshipscategory' => $id])->with(['message' => 'Encuantro eliminado exitosamente', 'alert-type' => 'success']);
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()->route('championshipscategories.edit', ['championshipscategory' => $id])->with(['message' => 'Ocurrió un error', 'alert-type' => 'error']);
         }
     }
     
@@ -349,6 +361,7 @@ class ChampionshipsCategoriesController extends Controller
     }
 
     public function game_finish($id, Request $request){
+        // dd($request->all());
         try {
             ChampionshipsDetail::where('id', $id)->update([
                 'winner_id' => $request->win_type == 'normal' ? $request->winner_id : $request->winner_id_alt,

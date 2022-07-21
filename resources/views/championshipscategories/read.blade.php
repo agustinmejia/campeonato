@@ -192,9 +192,12 @@
                                                 @endif
                                             </td>
                                             <td class="no-sort no-click bread-actions">
-                                                @if (count($detail->players) == 0)
+                                                @if (count($detail->players) == 0 && $detail->status != 'finalizado')
                                                     <a href="#" data-detail='@json($detail)' data-toggle="modal" data-target="#enable-modal" title="Habilitar" class="btn btn-sm btn-info btn-enable">
                                                         <i class="voyager-check"></i> <span class="hidden-xs hidden-sm">Habilitar</span>
+                                                    </a>    
+                                                    <a href="#" data-detail='@json($detail)' data-toggle="modal" data-target="#finish-modal" title="Finalizar" class="btn btn-sm btn-danger btn-finish">
+                                                        <i class="glyphicon glyphicon-time"></i> <span class="hidden-xs hidden-sm">Finalizar</span>
                                                     </a>    
                                                 @endif
                                                 @if (count($detail->players) > 0 && $detail->status == 'pendiente')
@@ -338,6 +341,38 @@
             </div>
         </div>
     </form>
+
+    {{-- Finish modal --}}
+    <form id="form-finish" action="#" method="post">
+        @csrf
+        <input type="hidden" name="win_type" value="walkover">
+        <div class="modal fade modal-danger" tabindex="-1" id="finish-modal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="glyphicon glyphicon-time"></i> Finalizar partido por walkover</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" id="div-winner_id_alt">
+                            <label for="winner_id_alt">Equipo ganador</label>
+                            <select name="winner_id_alt" id="select-winner_id_alt" class="form-control" required>
+                                
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="observations">Observaciones</label>
+                            <textarea name="observations" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer text-right">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger btn-submit">Finalizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 @stop
 
 @section('css')
@@ -380,6 +415,18 @@
                         </tr>
                     `);
                 });
+            });
+
+            $('.btn-finish').click(function(){
+                let detail = $(this).data('detail');
+                let url = "{{ url('admin/championshipscategories/game') }}/"+detail.id+"/finish";
+                $('#form-finish').attr('action', url);
+                $('#select-winner_id_alt').html(`
+                    <option value="">Seleccione al equipo ganador</option>
+                    <option value="${detail.local.id}">${detail.local.name}</option>
+                    <option value="${detail.visitor.id}">${detail.visitor.name}</option>
+                `);
+                console.log(detail)
             });
         });
 
